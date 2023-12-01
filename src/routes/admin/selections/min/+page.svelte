@@ -246,10 +246,10 @@
 	}}>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="parentId_id">大分類選択</label>
-			<select name="parentid_id" bind:value={currentmajaItemId} on:change={() => onChangeMajaSel(currentMidselRowData)}>
+			<select name="parentId_id" bind:value={currentmajaItemId} on:change={() => onChangeMajaSel(currentMidselRowData)}>
 					<option selected disabled value="大分類を選択...">大分類を選択...</option>
 				{#each $majaChoicesStore as p_elem}
-					<option value={p_elem.itemId}>{p_elem.text}</option>
+					<option value={p_elem._id}>{p_elem.text}</option>
 				{/each}
 				<option value={addNewMajaChoice}>大分類作成...</option>
 			</select>
