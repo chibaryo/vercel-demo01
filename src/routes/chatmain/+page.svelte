@@ -3,16 +3,18 @@
 	import { enhance, applyAction } from '$app/forms'
 	import { invalidateAll } from '$app/navigation'
 
-	import DarkSwitcher from './DarkSwitcher.svelte'
+//	import DarkSwitcher from './DarkSwitcher.svelte'
 	let message
 	let loading = false
 	let isVisibleGptAnswerBox = false
 
+	import { majaArray, midArray, minArray, majaSelectedStore, midSelectedStore, minSelectedStore, gptchatStrStore } from './store'
+
 	/** @type {import('./$types').PageData} */
 	export let data
-	console.log("data.min_retdata", data.min_retdata)
-
-	import { majaSelectedStore, midSelectedStore, minSelectedStore, gptchatStrStore } from './store'
+	majaArray.set(JSON.parse(data.majaselections))
+	midArray.set(JSON.parse(data.midselections))
+	minArray.set(JSON.parse(data.minselections))
 
 	const handlemQChange = () => {
 		console.log("$majaSelectedStore: ", $majaSelectedStore)
@@ -36,7 +38,7 @@
 		<div style="width: 100vw; font-size: 1rem; line-height: 1rem;"><span style="">大分類選択（任意）：</span></div>
 		<select bind:value={$majaSelectedStore} on:change={() => handlemQChange()} style="width: 100vw;">
 			<option selected disabled value="選択...">選択...</option>
-			{#each data.maja_retdata as mq}
+			{#each $majaArray as mq}
 			<optgroup label="">
 				<option value={mq}>
 					{mq.text}
@@ -52,7 +54,7 @@
 		<div style="width: 100vw; font-size: 1rem; line-height: 1rem;"><span>中分類選択（任意）：</span></div>
 		<select bind:value={$midSelectedStore} on:change={() => handlemidQChange()} style="width: 100vw;">
 			<option selected disabled value="選択...">選択...</option>
-			{#each data.mid_retdata as midrow}
+			{#each $midArray as midrow}
 			{#if midrow.parentId._id === $majaSelectedStore._id}
 			<optgroup label="" style="line-height: 0.75rem;">
 				<option value={midrow}>
@@ -71,7 +73,7 @@
 		<div style="width: 100vw; font-size: 1rem; line-height: 1rem;"><span>小分類選択（任意）：</span></div>
 		<select bind:value={$minSelectedStore} on:change={() => handleminQChange()} style="width: 100vw;">
 			<option selected disabled value="選択...">選択...</option>
-			{#each data.min_retdata as minq}
+			{#each $minArray as minq}
 			{#if minq.parentId._id === $midSelectedStore._id}
 			<optgroup label="" style="line-height: 1rem;">
 				<option value={minq}>

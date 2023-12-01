@@ -1,3 +1,5 @@
+import { GrandChildModel, ChildModel, SelectionModel } from '$lib/mongodb/models/Selection'
+
 // import type { PageServerLoad, Actions } from './$types'
 import { get_vectorized_arr, cosine_similarity, compareWithVect, gpt_createCompletion } from './gpt_prepare'
 

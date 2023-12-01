@@ -23,6 +23,7 @@
 	"type": "module",
 	"dependencies": {
 		"mongoose": "^8.0.2",
+		"svelte-loading-spinners": "^0.3.4",
 		"vercel": "^32.6.0"
 	}
 }
