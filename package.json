@@ -22,6 +22,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"mongoose": "^8.0.2"
+		"mongoose": "^8.0.2",
+		"vercel": "^32.6.0"
 	}
 }
