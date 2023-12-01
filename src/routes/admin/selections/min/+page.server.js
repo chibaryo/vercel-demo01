@@ -82,19 +82,25 @@ export const actions = {
 	},
 	addnewmid: async ({ request }) => {
 		const data = await request.formData()
-		console.log("add new maja data: ", data)
+		console.log("add new mid data: ", data)
 
 		const mid_name = data.get('mid_name')?.toString() ?? ''
-		// const parentId = data.get('parentId')
+		const parentId_id = data.get('parentId_id').toString() ?? ''
 
-		// Get total maja items:
-		const mid_resp =  await fetch('/api/selections/mid', {
+		// Get total mid items:
+		await connectDB()
+		const mid_resp = await ChildModel.find({}).sort({ itemId: 1 }).lean()
+/*		const mid_resp =  await fetch('/api/selections/mid', {
 			method: 'GET'
-		})
-		const mid_respdata = await mid_resp.json()
-		const total_length = mid_respdata["midselections"].length
+		}) */
+		const total_length = mid_resp.length
 
-		const add_midresp = await fetch('/api/selections/mid', {
+		const add_midresp = await ChildModel.create({
+			itemId: total_length + 1,
+			parentId: parentId_id,
+			text: mid_name
+		})
+/*		const add_midresp = await fetch('/api/selections/mid', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -104,10 +110,10 @@ export const actions = {
 				text: mid_name
 			})
 		})
+*/
+//		const add_majadata = await add_midresp.json()
 
-		const add_majadata = await add_midresp.json()
-
-		return { added: add_majadata } // add_majadata.inserted.itemId
+		return { added: add_midresp } // add_majadata.inserted.itemId
 	},
 	addnewmaja: async ({ request }) => {
 		const data = await request.formData()
