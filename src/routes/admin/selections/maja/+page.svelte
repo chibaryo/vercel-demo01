@@ -16,7 +16,7 @@
 	let addNewMajaselModalOpen = false
 
 	const handleAddPost = async () => {
-
+		addNewMajaselModalOpen = true
 	}
 	const handleInsertCsv = async () => {
 
