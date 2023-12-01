@@ -91,6 +91,8 @@
 
 	const deleteRow = async (_id) => {
 		console.log("_id: ", _id)
+		console.log("VERCEL_URL", process.env.VERCEL_URL)
+
 		const resp = await fetch(`/api/selections/min/${_id}`, {
 			method: 'DELETE',
 			headers: {
