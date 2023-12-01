@@ -33,7 +33,6 @@
 	import InsertManyCsvModal from './InsertManyCsvModal.svelte'
 	import DeleteManyModal from './DeleteManyModal.svelte'
 	import DeleteMinselModal from './DeleteMinselModal.svelte'
-	//	import DeleteMidselModal from './DeleteMidselModal.svelte'
 
 	let insertManyFlag = false
 	let addMinselModalOpen = false
@@ -363,6 +362,9 @@
 		padding: 2px;
 	}
 	tbody > tr > td:nth-child(1) {
+		text-align: center;
+	}
+	tbody > tr > td:nth-child(2) {
 		text-align: center;
 	}
 
