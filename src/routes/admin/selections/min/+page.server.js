@@ -53,7 +53,8 @@ export const actions = {
 		const text = data.get('text')?.toString() ?? ''
 		const parentId_id = data.get('parentId_id')
 
-		const add_minresp = await fetch('/api/selections/min', {
+		await connectDB()
+/*		const add_minresp = await fetch('/api/selections/min', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -64,8 +65,14 @@ export const actions = {
 				text: text
 			})
 		})
+*/
+		const response = await GrandChildModel.create({
+			itemId: itemId,
+			parentId: parentId_id,
+			text: text,
+		})
 
-		return { added: await add_minresp.json() } // add_majadata.inserted.itemId
+		return { added: response }
 	},
 	editminselpost: async ({ request }) => {
 		const data = await request.formData()
