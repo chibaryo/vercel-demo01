@@ -15,7 +15,7 @@
 
 	}
 	const handleMultiRowDelete = async () => {
-		
+
 	}
 	const openMajaselEditModal = async (row) => {
 
@@ -52,3 +52,33 @@
 	</tbody>
 </table>
 </section>
+
+<style>
+	form > input, div {
+		margin: 12px;
+	}
+	.btn-action {
+		width: 14vw;
+		padding: 0.5rem;
+		text-align: center;
+	}
+	.btn-edit {
+		background-color: blue;
+		color: #fff;
+	}
+	.btn-delete {
+		background-color: red;
+		color: #fff;
+	}
+
+	table, tr, th, td {
+		border: solid 1px;
+	}
+	tbody > tr > td {
+		padding: 2px;
+	}
+	tbody > tr > td:nth-child(1) {
+		text-align: center;
+	}
+
+</style>
