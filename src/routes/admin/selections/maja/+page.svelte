@@ -8,6 +8,7 @@
 	export let data
 	majaChoicesStore.set(JSON.parse(data["majaselections"]))
 
+	console.log("$majaChoicesStore: ", $majaChoicesStore)
 
 </script>
 
