@@ -8,6 +8,13 @@
 	export let data
 	majaChoicesStore.set(JSON.parse(data["majaselections"]))
 
+
+	//
+	import AddNewMajaselModal from  '../mid/AddNewMajaselModal.svelte'
+
+	//
+	let addNewMajaselModalOpen = false
+
 	const handleAddPost = async () => {
 
 	}
@@ -53,8 +60,32 @@
 </table>
 </section>
 
+<!-- Add New Major selection modal -->
+<AddNewMajaselModal visible={addNewMajaselModalOpen}>
+	<h2>大分類を作成する</h2>
+	<form method="post" action="?/addnewmaja" use:enhance={() => {
+		return async ({ result }) => {
+			invalidateAll()
+			await applyAction(result)
+			// Renew store
+			console.log("result: ", result.data)
+			// Close modal
+			addNewMajaselModalOpen = false
+			$majaChoicesStore = [...$majaChoicesStore, { _id: result.data.added.inserted._id, itemId: result.data.added.inserted.itemId, text: result.data.added.inserted.text }] //, add_arr]
+			console.log("$majaChoicesStore", $majaChoicesStore)
+		}
+	}}>
+		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
+			<label for="maja_name">大分類の名前</label>
+			<input type="text" name="maja_name" />
+		</div>
+		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
+	</form>
+	<button on:click={() => addNewMajaselModalOpen = false} style="background-color: rgb(254 226 226);">Cancel</button>
+</AddNewMajaselModal>
+
 <style>
-	form > input, div {
+	form > div {
 		margin: 12px;
 	}
 	.btn-action {
