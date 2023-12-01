@@ -1,4 +1,7 @@
 import { SelectionModel, ChildModel, GrandChildModel } from '$lib/mongodb/models/Selection'
+import mongoose from 'mongoose'
+import pkg from 'mongoose'
+const { Types, Schema, Document, Model, models } = pkg
 import { connectDB } from '$lib/mongodb/plugins/dbconnection'
 
 export const load = (async () => {
@@ -78,7 +81,22 @@ export const actions = {
 		const data = await request.formData()
 		console.log("minsel data: ", data)
 
-		return
+		const _id = data.get('_id').toString()
+		const itemId = Number(data.get('itemId'))
+		const parentId_id = data.get('parentId_id').toString()
+		const text = data.get('text')?.toString() ?? ''
+
+		const resp = await GrandChildModel.findByIdAndUpdate(
+			_id,
+			{
+				itemId: itemId,
+				parentId: parentId_id,
+				text: text,
+			}, { returnDocument: 'after' }
+		).populate('parentId').lean()
+		console.log("resp", resp)
+	
+		return { updated: JSON.stringify(resp) }
 	},
 	addnewmid: async ({ request }) => {
 		const data = await request.formData()

@@ -303,24 +303,24 @@
 			invalidateAll()
 			await applyAction(result)
 			// Renew store
-			console.log("result: ", result.data)
+			const { _id, itemId, text, parentId } = JSON.parse(result.data.updated)
 			// Close modal
 			editMinselModalOpen = false
-//			$majaChoicesStore = [...$majaChoicesStore, { _id: result.data.added.inserted._id, itemId: result.data.added.inserted.itemId, text: result.data.added.inserted.text }] //, add_arr]
-//			console.log("$majaChoicesStore", $majaChoicesStore)
-//			currentMinselRowData.parentId.itemId = result.data.added.inserted.itemId //  switch to the Action newly created
+//			const xloc = $minselStore.findIndex((elem) => elem._id === _id)
+//			$minselStore.splice(xloc, 1, { _id: _id, itemId: itemId, text: text, "parentId.text": parentId.text })
+			$minselStore = $minselStore
 		}
 	}}>
 		<input type="hidden" name="_id" bind:value={currentMinselRowData._id} />
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="id">itemId</label>
-			<input type="number" name="id" bind:value={currentMinselRowData.itemId} />
+			<label for="itemId">itemId</label>
+			<input type="number" name="itemId" bind:value={currentMinselRowData.itemId} />
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="parentId_id">中分類選択</label>
-			<select name="parentid_id" bind:value={currentmidItemId} on:change={() => onChangeMidSel(currentMinselRowData)}>
+			<select name="parentId_id" bind:value={currentmidItemId} on:change={() => onChangeMidSel(currentMinselRowData)}>
 				{#each $midselStore as p_elem}
-					<option value={p_elem.itemId}>{p_elem.text}</option>
+					<option value={p_elem._id}>{p_elem.text}</option>
 				{/each}
 					<option value={addNewMidChoice}>中分類作成...</option>
 			</select>
