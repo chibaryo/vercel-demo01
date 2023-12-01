@@ -32,7 +32,7 @@ export const actions = {
 		const itemId = Number(data.get('itemId'))
 		const text = data.get('text')?.toString() ?? ''
 
-		const resp = await SelectionModel.findbyIdAndUpdate(
+		const resp = await SelectionModel.findByIdAndUpdate(
 				_id,
 			{
 				itemId: itemId,
