@@ -265,7 +265,15 @@
 </AddNewMidselModal>
 
 <AddMinselModal visible={addMinselModalOpen}>
-	<form method="post" action="?/addminselpost">
+	<form method="post" action="?/addminselpost" use:enhance={() => {
+		return async ({ result }) => {
+			invalidateAll()
+			await applyAction(result)
+			// Renew store
+			console.log("result: ", result.data)
+			// Close modal
+			}
+		}}>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="itemId">itemId</label>
 			<input type="number" name="itemId" />
