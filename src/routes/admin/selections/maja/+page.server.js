@@ -24,5 +24,11 @@ export const actions = {
 		})
 
 		return { added: add_majaresp } // add_majadata.inserted.itemId
+	},
+	editmajaselpost: async ({ request }) => {
+		const data = await request.formData()
+		console.log("data: ", data)
+//		const maja_name = data.get('maja_name')?.toString() ?? ''
+
 	}
 } // satisfies Actions
