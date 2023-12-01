@@ -42,3 +42,18 @@ export const PUT = (async ({ params, request }) => {
   ))
 
 }) // satisfies RequestHandler
+
+export const DELETE = (async ({ params, request }) => {
+	const _id = params._id
+
+	await connectDB()
+	const response = await SelectionModel.findByIdAndDelete({ _id: _id })
+
+	return new Response(JSON.stringify(
+    { 
+			message: 'OK',
+			deleted: response
+		}
+  ))
+
+})

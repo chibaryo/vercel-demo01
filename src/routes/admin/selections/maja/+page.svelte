@@ -11,9 +11,13 @@
 
 	//
 	import AddNewMajaselModal from  '../mid/AddNewMajaselModal.svelte'
-
+	import DeleteMajaselModal from './DeleteMajaselModal.svelte'
 	//
 	let addNewMajaselModalOpen = false
+	let deleteMajaselModalOpen = false
+
+	//
+	let currentMajaselRowData
 
 	const handleAddPost = async () => {
 		addNewMajaselModalOpen = true
@@ -29,6 +33,26 @@
 	}
 
 	const handleDeleteButton = async (row) => {
+
+	}
+	const deleteRow = async (_id) => {
+		console.log("_id: ", _id)
+
+		const resp = await fetch(`/api/selections/maja/${_id}`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		})
+
+		// Remove record from store
+		const deldata = await resp.json()
+		console.log("deldata.deleted: ", deldata.deleted)
+		$majaChoicesStore = $majaChoicesStore.filter((row) => {
+			return row._id != deldata.deleted._id
+		})
+		console.log("$majaChoicesStore", $majaChoicesStore)
+		deleteMajaselModalOpen = false
 
 	}
 </script>
@@ -83,6 +107,15 @@
 	</form>
 	<button on:click={() => addNewMajaselModalOpen = false} style="background-color: rgb(254 226 226);">Cancel</button>
 </AddNewMajaselModal>
+
+<!-- Delete Midsel modal -->
+<DeleteMajaselModal visible={deleteMajaselModalOpen}>
+	<h2>削除しますか？</h2>
+	<div class="background-color: rgb(231 229 228); display: flex; flex-flow: column;">{currentMajaselRowData.itemId}</div>
+	<p>{currentMajaselRowData.text}</p>
+	<button on:click={() => deleteRow(currentMajaselRowData._id)}>削除</button>
+	<button on:click={() => deleteMajaselModalOpen = false} style="background-color: rgb(254 226 226);">キャンセル</button>
+</DeleteMajaselModal>
 
 <style>
 	form > div {
