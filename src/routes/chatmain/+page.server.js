@@ -1,10 +1,12 @@
 import { GrandChildModel, ChildModel, SelectionModel } from '$lib/mongodb/models/Selection'
+import { connectDB } from '$lib/mongodb/plugins/dbconnection'
 
 // import type { PageServerLoad, Actions } from './$types'
 import { get_vectorized_arr, cosine_similarity, compareWithVect, gpt_createCompletion } from './gpt_prepare'
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = (async ({ params }) => {
+	await connectDB()
 	const maja_resp = await SelectionModel.find({}).sort({ itemId: 1 }).lean()
 	const mid_resp = await ChildModel.find({}).populate('parentId').sort({ "parentId.text": 1 }).lean()
 	const min_resp = await GrandChildModel.find({}).populate('parentId').sort({ "parentId.text": 1 }).lean()
