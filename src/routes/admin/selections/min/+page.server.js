@@ -95,6 +95,7 @@ export const actions = {
 		}) */
 		console.log("mid_resp: ", mid_resp)
 		const total_length = mid_resp.length
+		console.log("total: ", total_length)
 
 /*		const add_midresp = await ChildModel.create({
 			itemId: total_length + 1,
