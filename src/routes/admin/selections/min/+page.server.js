@@ -72,7 +72,7 @@ export const actions = {
 			text: text,
 		})
 
-		return { added: response }
+		return { added: JSON.stringify(response) }
 	},
 	editminselpost: async ({ request }) => {
 		const data = await request.formData()
