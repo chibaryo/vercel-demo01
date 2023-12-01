@@ -33,7 +33,9 @@
 	}
 
 	const handleDeleteButton = async (row) => {
-
+		currentMajaselRowData = row
+		console.log("currentMajaselRowData", currentMajaselRowData)
+		deleteMajaselModalOpen = true
 	}
 	const deleteRow = async (_id) => {
 		console.log("_id: ", _id)
