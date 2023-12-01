@@ -8,10 +8,12 @@ export const load = (async () => {
 	await connectDB()
 	const maja_resp = await SelectionModel.find({}).sort({ itemId: 1 }).lean()
 	const mid_resp = await ChildModel.find({}).populate('parentId').sort({ "parentId.text": 1 }).lean()
+	const min_resp = await GrandChildModel.find({}).populate('parentId').sort({ "parentId.text": 1 }).lean()
 
   return {
 		majaselections: JSON.stringify(maja_resp),
-		midselections: JSON.stringify(mid_resp)
+		midselections: JSON.stringify(mid_resp),
+		minselections: JSON.stringify(min_resp)
   }
 }) // satisfies PageServerLoad
 
