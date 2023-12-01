@@ -131,7 +131,7 @@
 			invalidateAll()
 			await applyAction(result)
 			// Renew store
-			console.log("result: ", result.data)
+			console.log("result: ", JSON.parse(result.data))
 			// Close modal
 			editMajaselModalOpen = false
 //			$majaChoicesStore = [...$majaChoicesStore, { _id: result.data.added.inserted._id, itemId: result.data.added.inserted.itemId, text: result.data.added.inserted.text }] //, add_arr]
