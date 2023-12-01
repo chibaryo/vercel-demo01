@@ -292,8 +292,8 @@
 			<input type="text" name="text" />
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
-		<button on:click={() => addNewMidselModalOpen = false} style="background-color: rgb(254 226 226);">Cancel</button>
 	</form>
+	<button on:click={() => addMinselModalOpen = false} style="background-color: rgb(254 226 226);">Cancel</button>
 </AddMinselModal>
 
 <!-- Edit Midsel Modal -->
