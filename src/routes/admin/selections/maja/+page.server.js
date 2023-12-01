@@ -23,7 +23,7 @@ export const actions = {
 			text: maja_name
 		})
 
-		return { added: add_majaresp } // add_majadata.inserted.itemId
+		return { added: JSON.stringify(add_majaresp) } // add_majadata.inserted.itemId
 	},
 	editmajaselpost: async ({ request }) => {
 		const data = await request.formData()

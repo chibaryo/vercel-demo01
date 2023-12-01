@@ -99,10 +99,10 @@
 			invalidateAll()
 			await applyAction(result)
 			// Renew store
-			console.log("result: ", result.data)
+			const { _id, itemId, text, createdAt, updatedAt } = JSON.parse(result.data.added)
 			// Close modal
 			addNewMajaselModalOpen = false
-			$majaChoicesStore = [...$majaChoicesStore, { _id: result.data.added.inserted._id, itemId: result.data.added.inserted.itemId, text: result.data.added.inserted.text }] //, add_arr]
+			$majaChoicesStore = [...$majaChoicesStore, { _id: _id, itemId: itemId, text: text, createdAt: createdAt, updatedAt: updatedAt }]
 			console.log("$majaChoicesStore", $majaChoicesStore)
 		}
 	}}>
@@ -131,11 +131,13 @@
 			invalidateAll()
 			await applyAction(result)
 			// Renew store
-			console.log("result: ", JSON.parse(result.data))
+			const { _id, itemId, text, createdAt, updatedAt } = JSON.parse(result.data.updated)
 			// Close modal
 			editMajaselModalOpen = false
-//			$majaChoicesStore = [...$majaChoicesStore, { _id: result.data.added.inserted._id, itemId: result.data.added.inserted.itemId, text: result.data.added.inserted.text }] //, add_arr]
-//			console.log("$majaChoicesStore", $majaChoicesStore)
+			// locate: Modified _id = JSON.parse(result.data.updated)["_id"]
+			const xloc = $majaChoicesStore.findIndex((elem) => elem._id === _id)
+			$majaChoicesStore.splice(xloc, 1, { _id: _id, itemId: itemId, text: text, createdAt: createdAt, updatedAt: updatedAt })
+			$majaChoicesStore = $majaChoicesStore
 //			currentMinselRowData.parentId.itemId = result.data.added.inserted.itemId //  switch to the Action newly created
 		}
 	}}>
