@@ -1,25 +1,16 @@
-import { GrandChildModel } from '$lib/mongodb/models/Selection'
+import { SelectionModel, ChildModel, GrandChildModel } from '$lib/mongodb/models/Selection'
+import { connectDB } from '$lib/mongodb/plugins/dbconnection'
 
 export const load = (async () => {
-	const majaresp = await fetch('/api/selections/maja', {
-		method: 'GET'
-	})
-	const maja_respdata = await majaresp.json()
-
-	const midresp = await fetch('/api/selections/mid', {
-		method: 'GET'
-	})
-	const mid_respdata = await midresp.json()
-
-	const minresp = await fetch(`/api/selections/min`, {
-		method: 'GET',
-	})
-	const min_retdata = await minresp.json()
+	await connectDB()
+	const maja_resp = await SelectionModel.find({}).sort({ itemId: 1 }).lean()
+	const mid_resp = await ChildModel.find({}).populate('parentId').sort({ "parentId.text": 1 }).lean()
+	const min_resp = await GrandChildModel.find({}).populate('parentId').sort({ "parentId.text": 1 }).lean()
 
   return {
-		majaselections: maja_respdata["majaselections"],
-		midselections: mid_respdata["midselections"],
-		minselections: min_retdata["minselections"]
+		majaselections: JSON.stringify(maja_resp),
+		midselections: JSON.stringify(mid_resp),
+		minselections: JSON.stringify(min_resp)
   }
 }) // satisfies PageServerLoad
 

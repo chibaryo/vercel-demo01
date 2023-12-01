@@ -19,12 +19,12 @@
 	let currentMinselRowData
 
 	import { minselStore, midselStore, majaChoicesStore } from '../store'
-	minselStore.set(data.minselections)
+	minselStore.set(JSON.parse(data.minselections))
 
-	const parent_elems = data.midselections.map((obj) => ({ _id: obj._id, itemId: obj.itemId, text: obj.text }))
+	const parent_elems = JSON.parse(data.midselections).map((obj) => ({ _id: obj._id, itemId: obj.itemId, text: obj.text }))
 	midselStore.set(parent_elems)
 
-	majaChoicesStore.set(data.majaselections)
+	majaChoicesStore.set(JSON.parse(data.majaselections))
 
 	//
 	import AddNewMajaselModal from '../mid/AddNewMajaselModal.svelte'
