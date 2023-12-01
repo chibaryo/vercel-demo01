@@ -93,15 +93,13 @@ export const actions = {
 /*		const mid_resp =  await fetch('/api/selections/mid', {
 			method: 'GET'
 		}) */
-		console.log("mid_resp: ", mid_resp)
 		const total_length = mid_resp.length
-		console.log("total: ", total_length)
 
-/*		const add_midresp = await ChildModel.create({
+		const add_midresp = await ChildModel.create({
 			itemId: total_length + 1,
 			parentId: parentId_id,
 			text: mid_name
-		}) */
+		})
 /*		const add_midresp = await fetch('/api/selections/mid', {
 			method: 'POST',
 			headers: {
