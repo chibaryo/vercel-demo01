@@ -249,7 +249,7 @@
 			<select name="parentId_id" bind:value={currentmajaItemId} on:change={() => onChangeMajaSel(currentMidselRowData)}>
 					<option selected disabled value="大分類を選択...">大分類を選択...</option>
 				{#each $majaChoicesStore as p_elem}
-					<option value={p_elem._id}>{p_elem.text}</option>
+					<option value={p_elem._id}>{p_elem._id}</option>
 				{/each}
 				<option value={addNewMajaChoice}>大分類作成...</option>
 			</select>
