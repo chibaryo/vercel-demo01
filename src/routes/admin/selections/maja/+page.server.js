@@ -40,6 +40,6 @@ export const actions = {
 			}, { returnDocument: 'after' }
 		)
 	
-		return { updated: resp }
+		return { updated: JSON.stringify(resp) }
 	}
 } // satisfies Actions
