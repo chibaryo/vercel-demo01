@@ -142,7 +142,7 @@
 		<input type="hidden" name="_id" bind:value={currentMajaselRowData._id} />
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="id">itemId</label>
-			<input type="number" name="id" bind:value={currentMajaselRowData.itemId} />
+			<input type="number" name="itemId" bind:value={currentMajaselRowData.itemId} />
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="text">テキスト</label>

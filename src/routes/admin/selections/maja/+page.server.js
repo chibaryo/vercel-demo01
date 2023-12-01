@@ -27,8 +27,19 @@ export const actions = {
 	},
 	editmajaselpost: async ({ request }) => {
 		const data = await request.formData()
-		console.log("data: ", data)
-//		const maja_name = data.get('maja_name')?.toString() ?? ''
 
+		const _id = data.get('_id').toString()
+		const itemId = Number(data.get('itemId'))
+		const text = data.get('text')?.toString() ?? ''
+
+		const resp = await SelectionModel.findbyIdAndUpdate(
+				_id,
+			{
+				itemId: itemId,
+				text: text,
+			}, { returnDocument: 'after' }
+		)
+	
+		return { updated: resp }
 	}
 } // satisfies Actions
