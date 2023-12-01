@@ -6,6 +6,6 @@ export const load = (async () => {
 	const resp = await GrandChildModel.find({}).populate('parentId').sort({ "parentId.text": 1 }).lean()
 
   return {
-		minselections: resp
+		minselections: JSON.stringify(resp)
   }
 }) // satisfies PageServerLoad
