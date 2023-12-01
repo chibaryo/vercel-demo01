@@ -91,7 +91,7 @@
 
 	const deleteRow = async (_id) => {
 		console.log("_id: ", _id)
-		console.log("VERCEL_URL", process.env.VERCEL_URL)
+//		console.log("VERCEL_URL", process.env.VERCEL_URL)
 
 		const resp = await fetch(`/api/selections/min/${_id}`, {
 			method: 'DELETE',
@@ -269,11 +269,16 @@
 		return async ({ result }) => {
 			invalidateAll()
 			await applyAction(result)
-			// Renew store
-			console.log("result: ", result.data)
 			// Close modal
-			}
-		}}>
+			addMinselModalOpen = false
+			// Renew store
+			const { _id, itemId, text, parentId, createdAt, updatedAt } = JSON.parse(result.data.added)
+			console.log("parentId", parentId)
+			$minselStore = [...$minselStore, { _id: _id, itemId: itemId, text: text, parentId: parentId, createdAt: createdAt, updatedAt: updatedAt }]
+			$minselStore = $minselStore
+			console.log("now $minselStore", $minselStore)
+		}
+	}}>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="itemId">itemId</label>
 			<input type="number" name="itemId" />

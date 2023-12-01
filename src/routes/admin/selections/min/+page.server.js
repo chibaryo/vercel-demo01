@@ -69,11 +69,13 @@ export const actions = {
 			})
 		})
 */
-		const response = await GrandChildModel.create({
+		let response = await GrandChildModel.create({
 			itemId: itemId,
 			parentId: parentId_id,
 			text: text,
 		})
+		response = await response.populate('parentId')
+		console.log("resese", response)
 
 		return { added: JSON.stringify(response) }
 	},
