@@ -12,12 +12,11 @@
 	export let form
 
 	//
-	import AddNewMajaselModal from  '../mid/AddNewMajaselModal.svelte'
 	import DeleteMajaselModal from './DeleteMajaselModal.svelte'
 	import EditMajaselModal from '../mid/AddNewMajaselModal.svelte'
 
 	//
-	let addNewMajaselModalOpen = false
+	let addNewMajaselFlag = false
 	let deleteMajaselModalOpen = false
 	let editMajaselModalOpen = false
 
@@ -25,7 +24,8 @@
 	let currentMajaselRowData
 
 	const handleAddPost = async () => {
-		addNewMajaselModalOpen = true
+		addNewMajaselFlag = true
+		editMajaselModalOpen = true
 	}
 	const handleInsertCsv = async () => {
 
@@ -33,7 +33,7 @@
 	const handleMultiRowDelete = async () => {
 
 	}
-	const openMajaselEditModal = async (row) => {
+	const openEditModal = async (row) => {
 		currentMajaselRowData = row
 //		parent_selected = 
 		editMajaselModalOpen = true
@@ -89,37 +89,13 @@
 			<tr>
 				<td>{row.itemId}</td>
 				<td>{row.text}</td>
-				<td class="btn-action"><button class="btn-edit" on:click={() => openMajaselEditModal(row)}>編集</button></td>
+				<td class="btn-action"><button class="btn-edit" on:click={() => openEditModal(row)}>編集</button></td>
 				<td class="btn-action"><button class="btn-delete" on:click={() => handleDeleteButton(row)}>削除</button></td>
 			</tr>
 		{/each}
 	</tbody>
 </table>
 </section>
-
-<!-- Add New Major selection modal -->
-<AddNewMajaselModal visible={addNewMajaselModalOpen}>
-	<h2>大分類を作成する</h2>
-	<form method="post" action="?/addnewmaja" use:enhance={() => {
-		return async ({ result }) => {
-			invalidateAll()
-			await applyAction(result)
-			// Renew store
-			const { _id, itemId, text, createdAt, updatedAt } = JSON.parse(result.data.added)
-			// Close modal
-			addNewMajaselModalOpen = false
-			$majaChoicesStore = [...$majaChoicesStore, { _id: _id, itemId: itemId, text: text, createdAt: createdAt, updatedAt: updatedAt }]
-			console.log("$majaChoicesStore", $majaChoicesStore)
-		}
-	}}>
-		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="maja_name">大分類の名前</label>
-			<input type="text" name="maja_name" />
-		</div>
-		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
-	</form>
-	<button on:click={() => addNewMajaselModalOpen = false} style="background-color: rgb(254 226 226);">Cancel</button>
-</AddNewMajaselModal>
 
 <!-- Delete Midsel modal -->
 <DeleteMajaselModal visible={deleteMajaselModalOpen}>
@@ -130,7 +106,8 @@
 	<button on:click={() => deleteMajaselModalOpen = false} style="background-color: rgb(254 226 226);">キャンセル</button>
 </DeleteMajaselModal>
 
-<!-- Edit Midsel Modal -->
+<!-- Add / Edit Midsel Modal -->
+{#if addNewMajaselFlag === false}
 <EditMajaselModal visible={editMajaselModalOpen}>
 	<form method="post" action="?/editmajaselpost" use:enhance={() => {
 		return async ({ result }) => {
@@ -164,6 +141,36 @@
 	</form>
 	<button on:click={() => closeMajaselEditModal()} style="background-color: rgb(254 226 226);">Cancel</button>
 </EditMajaselModal>
+{:else if addNewMajaselFlag} <!-- Add new post -->
+<EditMajaselModal visible={editMajaselModalOpen}>
+	<form method="post" action="?/addmajaselpost" use:enhance={() => {
+		return async ({ result }) => {
+			invalidateAll()
+			await applyAction(result)
+			if (result.data) {
+			// Renew store
+			const { _id, itemId, text, createdAt, updatedAt } = JSON.parse(result.data.added)
+			// Close modal
+			editMajaselModalOpen = false
+			$majaChoicesStore = [...$majaChoicesStore, { _id: _id, itemId: itemId, text: text, createdAt: createdAt, updatedAt: updatedAt }]
+			form = null
+			}
+		}
+	}}>
+	{#if form?.dupval}<p class="error" style="background-color: #fefefe; color: red;">itemIdが重複しています</p>{/if}
+		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
+			<label for="itemId">itemId</label>
+			<input type="number" name="itemId" />
+		</div>
+		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
+			<label for="text">テキスト</label>
+			<input type="text" name="text" />
+		</div>
+		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
+	</form>
+	<button on:click={() => closeMajaselEditModal()} style="background-color: rgb(254 226 226);">Cancel</button>
+</EditMajaselModal>
+{/if}
 
 <style>
 	form > div {

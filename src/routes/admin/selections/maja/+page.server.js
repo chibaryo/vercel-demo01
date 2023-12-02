@@ -12,19 +12,27 @@ export const load = (async () => {
 })
 
 export const actions = {
-	addnewmaja: async ({ request }) => {
+	addmajaselpost: async ({ request }) => {
 		const data = await request.formData()
-		const maja_name = data.get('maja_name')?.toString() ?? ''
+		console.log("data: ", data)
+		const text = data.get('text')?.toString() ?? ''
+		const itemId = data.get('itemId')
 
-		const maja_resp = await SelectionModel.find({}).sort({ itemId: 1 }).lean()
-		const total_length = maja_resp.length
-
-		const add_majaresp = await SelectionModel.create({
-			itemId: total_length + 1,
-			text: maja_name
-		})
-
-		return { added: JSON.stringify(add_majaresp) } // add_majadata.inserted.itemId
+		try {
+			await connectDB()
+			const add_majaresp = await SelectionModel.create({
+				itemId: itemId,
+				text: text
+			})
+	
+			return { added: JSON.stringify(add_majaresp) } // add_majadata.inserted.itemId
+			} catch (err) {
+				if (err.code === 11000 && err.keyPattern.itemId === 1) {
+					return fail(400, {
+							itemId, dupval: true
+					})
+				}
+			}
 	},
 	editmajaselpost: async ({ request }) => {
 		const data = await request.formData()
@@ -34,6 +42,7 @@ export const actions = {
 		const text = data.get('text')?.toString() ?? ''
 
 		try {
+			await connectDB()
 			const resp = await SelectionModel.findByIdAndUpdate(
 				_id,
 			{
