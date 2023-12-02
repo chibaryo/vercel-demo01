@@ -284,10 +284,10 @@
 			$midselStore = $midselStore
 		}
 	}}>
-		<input type="hidden" name="_id" bind:value={currentMidselRowData._id} />
+		<input type="hidden" name="_id" value={currentMidselRowData._id} />
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="itemId">itemId</label>
-			<input type="number" name="itemId" bind:value={currentMidselRowData.itemId} />
+			<input type="number" name="itemId" value={currentMidselRowData.itemId} />
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="parentId_id">大分類選択:</label>
@@ -300,7 +300,7 @@
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="text">テキスト</label>
-			<input type="text" name="text" bind:value={currentMidselRowData.text} />
+			<input type="text" name="text" value={currentMidselRowData.text} />
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
 	</form>
