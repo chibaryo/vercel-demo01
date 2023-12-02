@@ -17,7 +17,6 @@
 
 	let currentMidselRowData
 	let currentMinselRowData
-	let origcurrentMinselRowData
 
 	import { minselStore, midselStore, majaChoicesStore } from '../store'
 	minselStore.set(JSON.parse(data.minselections))
@@ -66,14 +65,13 @@
 	
 	const openMinselEditModal = async (row) => {
 		console.log("row to edit: ", row)
-		origcurrentMinselRowData = currentMinselRowData = row
+		currentMinselRowData = row
 		currentmidItemId = currentMinselRowData.parentId._id
 		editMinselModalOpen = true
 	}
 
 	const closeEditMinselModal = () => {
 		editMinselModalOpen = false
-		console.log("origcurrentMinselRowData", origcurrentMinselRowData)
 	}
 
 	const closeAddMajaselModal = () => {
