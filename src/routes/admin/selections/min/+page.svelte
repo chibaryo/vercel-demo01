@@ -17,6 +17,7 @@
 
 	let currentMidselRowData
 	let currentMinselRowData
+	let origcurrentMinselRowData
 
 	import { minselStore, midselStore, majaChoicesStore } from '../store'
 	minselStore.set(JSON.parse(data.minselections))
@@ -45,7 +46,7 @@
 	let deleteManyModalOpen = false
 
 	// fn
-	const onChangeMajaSel = (row) => {
+	const onChangeMajaSel = () => {
 //		console.log("row: ", row)
 		console.log("currentItemId: ", currentmajaItemId)
 
@@ -56,7 +57,7 @@
 		}
 	}
 
-	const onChangeMidSel = (row) => {
+	const onChangeMidSel = () => {
 		if (currentmidItemId == 999999) {
 			console.log("中分類作る!")
 			addNewMidselModalOpen = true
@@ -65,14 +66,14 @@
 	
 	const openMinselEditModal = async (row) => {
 		console.log("row to edit: ", row)
-		currentMinselRowData = row
-//		parent_selected = 
+		origcurrentMinselRowData = currentMinselRowData = row
+		currentmidItemId = currentMinselRowData.parentId._id
 		editMinselModalOpen = true
 	}
 
 	const closeEditMinselModal = () => {
 		editMinselModalOpen = false
-		// Clear store ?
+		console.log("origcurrentMinselRowData", origcurrentMinselRowData)
 	}
 
 	const closeAddMajaselModal = () => {
@@ -112,8 +113,13 @@
 	const closeDeleteMinselModal = () => {
 		deleteMinselModalOpen = false
 	}
+	const closeAddMinselModal = () => {
+		addMinselModalOpen = false
+		currentmidItemId = undefined
+	}
 
 	const handleAddPost = async () => {
+		currentmidItemId = undefined
 		addMinselModalOpen = true
 	}
 
@@ -273,10 +279,10 @@
 			addMinselModalOpen = false
 			// Renew store
 			const { _id, itemId, text, parentId, createdAt, updatedAt } = JSON.parse(result.data.added)
-			console.log("parentId", parentId)
 			$minselStore = [...$minselStore, { _id: _id, itemId: itemId, text: text, parentId: parentId, createdAt: createdAt, updatedAt: updatedAt }]
 			$minselStore = $minselStore
 			console.log("now $minselStore", $minselStore)
+			currentmidItemId = undefined
 		}
 	}}>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
@@ -285,7 +291,8 @@
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="parentId_id">中分類選択</label>
-			<select name="parentId_id" bind:value={currentmidItemId} on:change={() => onChangeMidSel(currentMinselRowData)}>
+			<select name="parentId_id" bind:value={currentmidItemId} on:change={() => onChangeMidSel()}>
+				<option selected disabled value="中分類を選択...">中分類を選択...</option>
 				{#each $midselStore as p_elem}
 					<option value={p_elem._id}>{p_elem.text}</option>
 				{/each}
@@ -298,32 +305,36 @@
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
 	</form>
-	<button on:click={() => addMinselModalOpen = false} style="background-color: rgb(254 226 226);">Cancel</button>
+	<button on:click={() => closeAddMinselModal()} style="background-color: rgb(254 226 226);">Cancel</button>
 </AddMinselModal>
 
 <!-- Edit Midsel Modal -->
 <EditMinselModal visible={editMinselModalOpen}>
-	<form method="post" action="?/editminselpost" use:enhance={() => {
+	<form method="post" action="?/editminselpost" use:enhance={({ formData, cancel }) => {
+		console.log("formData: ", formData)
 		return async ({ result }) => {
 			invalidateAll()
 			await applyAction(result)
-			// Renew store
-			const { _id, itemId, text, parentId } = JSON.parse(result.data.updated)
-			// Close modal
-			editMinselModalOpen = false
-//			const xloc = $minselStore.findIndex((elem) => elem._id === _id)
-//			$minselStore.splice(xloc, 1, { _id: _id, itemId: itemId, text: text, "parentId.text": parentId.text })
-			$minselStore = $minselStore
+			if (result.data) {
+				// Renew store
+				const { _id, itemId, text, parentId } = JSON.parse(result.data.updated)
+				// Close modal
+				editMinselModalOpen = false
+				const xloc = $minselStore.findIndex((elem) => elem._id === _id)
+				$minselStore.splice(xloc, 1, { _id: _id, itemId: itemId, text: text, parentId: parentId })
+				$minselStore = $minselStore
+				currentmidItemId = undefined
+			}
 		}
 	}}>
-		<input type="hidden" name="_id" bind:value={currentMinselRowData._id} />
+		<input type="hidden" name="_id" value={currentMinselRowData._id} />
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="itemId">itemId</label>
-			<input type="number" name="itemId" bind:value={currentMinselRowData.itemId} />
+			<input type="number" name="itemId" value={currentMinselRowData.itemId} />
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="parentId_id">中分類選択</label>
-			<select name="parentId_id" bind:value={currentmidItemId} on:change={() => onChangeMidSel(currentMinselRowData)}>
+			<select name="parentId_id" bind:value={currentmidItemId} on:change={() => onChangeMidSel()}>
 				{#each $midselStore as p_elem}
 					<option value={p_elem._id}>{p_elem.text}</option>
 				{/each}
@@ -332,7 +343,7 @@
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="text">テキスト</label>
-			<input type="text" name="text" bind:value={currentMinselRowData.text} />
+			<input type="text" name="text" value={currentMinselRowData.text} />
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
 	</form>
