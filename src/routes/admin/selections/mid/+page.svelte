@@ -11,6 +11,7 @@
 	let newmaja_str
 	let currentmidItemId
 	let currentmajaItemId
+	console.log("currentmajaItemId", currentmajaItemId)
 
 	let addNewMidChoice = 999999
 	let addNewMajaChoice = 999999
@@ -44,7 +45,7 @@
 
 	// fn
 	const onChangeMajaSel = (row) => {
-//		console.log("row: ", row)
+		console.log("row: ", row)
 		console.log("currentItemId: ", currentmajaItemId)
 
 		if (currentmajaItemId == 999999) {
@@ -78,7 +79,8 @@
 	}
 
 	const closeAddMidselModal = () => {
-		addNewMidselModalOpen = false
+		addMidselModalOpen = false
+		currentmajaItemId = undefined
 	}
 
 	const handleDeleteButton = async (row) => {
@@ -91,7 +93,7 @@
 		console.log("_id: ", _id)
 //		console.log("VERCEL_URL", process.env.VERCEL_URL)
 
-		const resp = await fetch(`/api/selections/min/${_id}`, {
+		const resp = await fetch(`/api/selections/mid/${_id}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json'
@@ -101,10 +103,10 @@
 		// Remove record from store
 		const deldata = await resp.json()
 		console.log("deldata.deleted: ", deldata.deleted)
-		$minselStore = $minselStore.filter((row) => {
+		$midselStore = $midselStore.filter((row) => {
 			return row._id != deldata.deleted._id
 		})
-		console.log("$minselStore", $minselStore)
+		console.log("$midselStore", $midselStore)
 		deleteMinselModalOpen = false
 	}
 	const closeDeleteMinselModal = () => {
@@ -247,7 +249,7 @@
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="parentId_id">大分類選択</label>
-			<select name="parentId_id" bind:value={currentmajaItemId} on:change={() => onChangeMajaSel(currentMidselRowData)}>
+			<select name="parentId_id" bind:value={currentmajaItemId} on:change={() => onChangeMajaSel()}>
 				<option selected disabled value="大分類を選択...">大分類を選択...</option>
 				{#each $majaChoicesStore as p_elem}
 					<option value={p_elem._id}>{p_elem.text}</option>
@@ -261,7 +263,7 @@
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
 	</form>
-	<button on:click={() => addMidselModalOpen = false} style="background-color: rgb(254 226 226);">Cancel</button>
+	<button on:click={() => closeAddMidselModal()} style="background-color: rgb(254 226 226);">Cancel</button>
 </AddMidselModal>
 
 <!-- Edit Midsel Modal -->
