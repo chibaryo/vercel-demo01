@@ -8,3 +8,5 @@ export const majaSelectedStore = writable()
 export const midSelectedStore = writable()
 export const minSelectedStore = writable()
 export const gptchatStrStore = writable('')
+
+export const vectStore = writable([])

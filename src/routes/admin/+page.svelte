@@ -11,7 +11,7 @@
 <section>
 	<div style="display: grid; grid-template-columns: repeat (12, 1fr); gap: 6px; width: 100vw; height: 3.5rem; background-color: #fecca2; border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem;">
 		<div style="grid-column: 1 / span 1; align-self: center; padding-left: 1.25rem;">
-			<a href="/chatmain">
+			<a href="/">
 				<img src="/src/lib/assets/icons/home-outline.svg" alt="home" style="height: 2.5rem;" />
 			</a>
 		</div>
