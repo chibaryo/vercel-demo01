@@ -38,7 +38,7 @@
 //		parent_selected = 
 		editMajaselModalOpen = true
 	}
-	const closeMajaselEditModal = async () => {
+	const closeMajaselModal = async () => {
 		editMajaselModalOpen = false
 		form = null
 	}
@@ -106,8 +106,8 @@
 	<button on:click={() => deleteMajaselModalOpen = false} style="background-color: rgb(254 226 226);">キャンセル</button>
 </DeleteMajaselModal>
 
-<!-- Add / Edit Midsel Modal -->
-{#if addNewMajaselFlag === false}
+<!-- Edit / Add Midsel Modal -->
+{#if addNewMajaselFlag === false} <!-- Edit existing post -->
 <EditMajaselModal visible={editMajaselModalOpen}>
 	<form method="post" action="?/editmajaselpost" use:enhance={() => {
 		return async ({ result }) => {
@@ -131,15 +131,15 @@
 		<input type="hidden" name="_id" bind:value={currentMajaselRowData._id} />
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="id">itemId</label>
-			<input type="number" name="itemId" value={currentMajaselRowData.itemId} />
+			<input type="number" name="itemId" value={currentMajaselRowData.itemId} required />
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="text">テキスト</label>
-			<input type="text" name="text" value={currentMajaselRowData.text} />
+			<input type="text" name="text" value={currentMajaselRowData.text} required />
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
 	</form>
-	<button on:click={() => closeMajaselEditModal()} style="background-color: rgb(254 226 226);">Cancel</button>
+	<button on:click={() => closeMajaselModal()} style="background-color: rgb(254 226 226);">Cancel</button>
 </EditMajaselModal>
 {:else if addNewMajaselFlag} <!-- Add new post -->
 <EditMajaselModal visible={editMajaselModalOpen}>
@@ -160,15 +160,15 @@
 	{#if form?.dupval}<p class="error" style="background-color: #fefefe; color: red;">itemIdが重複しています</p>{/if}
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="itemId">itemId</label>
-			<input type="number" name="itemId" />
+			<input type="number" name="itemId" required />
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="text">テキスト</label>
-			<input type="text" name="text" />
+			<input type="text" name="text" required />
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
 	</form>
-	<button on:click={() => closeMajaselEditModal()} style="background-color: rgb(254 226 226);">Cancel</button>
+	<button on:click={() => closeMajaselModal()} style="background-color: rgb(254 226 226);">Cancel</button>
 </EditMajaselModal>
 {/if}
 
