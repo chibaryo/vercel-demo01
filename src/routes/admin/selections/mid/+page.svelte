@@ -6,7 +6,10 @@
 
 	/** @type {import('./$types').PageData} */
 	export let data
-	
+
+	/** @type {import('./$types').ActionData} */
+	export let form
+
 	let newmid_str
 	let newmaja_str
 	let currentmidItemId
@@ -74,6 +77,7 @@
 		editMidselModalOpen = false
 		// Clear store ?
 		currentmajaItemId = undefined
+		form = null
 	}
 
 	const closeAddMajaselModal = () => {
@@ -282,8 +286,10 @@
 			const xloc = $midselStore.findIndex((elem) => elem._id === _id)
 			$midselStore.splice(xloc, 1, { _id: _id, itemId: itemId, text: text, parentId: parentId })
 			$midselStore = $midselStore
+			form = null
 		}
 	}}>
+	{#if form?.dupval}<p class="error" style="background-color: #fefefe; color: red;">itemIdが重複しています</p>{/if}
 		<input type="hidden" name="_id" value={currentMidselRowData._id} />
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="itemId">itemId</label>

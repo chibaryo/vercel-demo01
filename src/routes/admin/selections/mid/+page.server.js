@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import pkg from 'mongoose'
 const { Types, Schema, Document, Model, models } = pkg
 import { connectDB } from '$lib/mongodb/plugins/dbconnection'
+import { error, fail } from '@sveltejs/kit'
 
 export const load = (async () => {
 	await connectDB()
@@ -88,7 +89,8 @@ export const actions = {
 		const parentId_id = data.get('parentId_id').toString()
 		const text = data.get('text')?.toString() ?? ''
 
-		const resp = await ChildModel.findByIdAndUpdate(
+		try {
+			const resp = await ChildModel.findByIdAndUpdate(
 			_id,
 			{
 				itemId: itemId,
@@ -96,9 +98,16 @@ export const actions = {
 				text: text,
 			}, { returnDocument: 'after' }
 		).populate('parentId').lean()
-		console.log("resp", resp)
+			console.log("resp", resp)
 	
-		return { updated: JSON.stringify(resp) }
+			return { updated: JSON.stringify(resp) }
+		} catch (err) {
+			if (err.code === 11000 && err.keyPattern.itemId === 1) {
+				return fail(400, {
+						itemId, dupval: true
+				})
+			}
+		}
 	},
 	addnewmid: async ({ request }) => {
 		const data = await request.formData()

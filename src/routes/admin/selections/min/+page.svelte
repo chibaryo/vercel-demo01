@@ -7,6 +7,9 @@
 	/** @type {import('./$types').PageData} */
 	export let data
 	
+	/** @type {import('./$types').ActionData} */
+	export let form
+
 	let newmid_str
 	let newmaja_str
 	let currentmidItemId
@@ -72,6 +75,7 @@
 
 	const closeEditMinselModal = () => {
 		editMinselModalOpen = false
+		form = null
 	}
 
 	const closeAddMajaselModal = () => {
@@ -114,11 +118,13 @@
 	const closeAddMinselModal = () => {
 		addMinselModalOpen = false
 		currentmidItemId = undefined
+		form = null
 	}
 
 	const handleAddPost = async () => {
 		currentmidItemId = undefined
 		addMinselModalOpen = true
+		editMinselModalOpen = true
 	}
 
 	const handleInsertCsv = async () => {
@@ -210,7 +216,7 @@
 <!-- Add New Major selection modal -->
 <AddNewMajaselModal visible={addNewMajaselModalOpen}>
 	<h2>大分類を作成する</h2>
-	<form method="post" action="?/addnewmaja" use:enhance={() => {
+	<form method="post" action="?/addmajaselpost" use:enhance={() => {
 		return async ({ result }) => {
 			invalidateAll()
 			await applyAction(result)
@@ -268,45 +274,8 @@
 	</form>
 </AddNewMidselModal>
 
-<AddMinselModal visible={addMinselModalOpen}>
-	<form method="post" action="?/addminselpost" use:enhance={() => {
-		return async ({ result }) => {
-			invalidateAll()
-			await applyAction(result)
-			// Close modal
-			addMinselModalOpen = false
-			// Renew store
-			const { _id, itemId, text, parentId, createdAt, updatedAt } = JSON.parse(result.data.added)
-			$minselStore = [...$minselStore, { _id: _id, itemId: itemId, text: text, parentId: parentId, createdAt: createdAt, updatedAt: updatedAt }]
-			$minselStore = $minselStore
-			console.log("now $minselStore", $minselStore)
-			currentmidItemId = undefined
-		}
-	}}>
-		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="itemId">itemId</label>
-			<input type="number" name="itemId" />
-		</div>
-		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="parentId_id">中分類選択</label>
-			<select name="parentId_id" bind:value={currentmidItemId} on:change={() => onChangeMidSel()}>
-				<option selected disabled value="中分類を選択...">中分類を選択...</option>
-				{#each $midselStore as p_elem}
-					<option value={p_elem._id}>{p_elem.text}</option>
-				{/each}
-					<option value={addNewMidChoice}>中分類作成...</option>
-			</select>
-		</div>
-		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="text">text</label>
-			<input type="text" name="text" />
-		</div>
-		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
-	</form>
-	<button on:click={() => closeAddMinselModal()} style="background-color: rgb(254 226 226);">Cancel</button>
-</AddMinselModal>
-
-<!-- Edit Midsel Modal -->
+<!-- Edit Minsel Modal addMinselModalOpen -->
+{#if addMinselModalOpen === false}
 <EditMinselModal visible={editMinselModalOpen}>
 	<form method="post" action="?/editminselpost" use:enhance={({ formData, cancel }) => {
 		console.log("formData: ", formData)
@@ -322,10 +291,12 @@
 				$minselStore.splice(xloc, 1, { _id: _id, itemId: itemId, text: text, parentId: parentId })
 				$minselStore = $minselStore
 				currentmidItemId = undefined
+				form = null
 			}
 		}
 	}}>
-		<input type="hidden" name="_id" value={currentMinselRowData._id} />
+	{#if form?.dupval}<p class="error" style="background-color: #fefefe; color: red;">itemIdが重複しています</p>{/if}
+	<input type="hidden" name="_id" value={currentMinselRowData._id} />
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="itemId">itemId</label>
 			<input type="number" name="itemId" value={currentMinselRowData.itemId} />
@@ -347,6 +318,54 @@
 	</form>
 	<button on:click={closeEditMinselModal} style="background-color: rgb(254 226 226);">Cancel</button>
 </EditMinselModal>
+
+{:else if addMinselModalOpen === true}
+<EditMinselModal visible={editMinselModalOpen}>
+	<form method="post" action="?/addminselpost" use:enhance={({ formData, cancel }) => {
+		console.log("formData: ", formData)
+		return async ({ result }) => {
+			invalidateAll()
+			await applyAction(result)
+			if (result.data.updated) {
+				// Close modal
+				editMinselModalOpen = false
+				addMinselModalOpen = false
+
+				// Renew store
+				const { _id, itemId, text, parentId, createdAt, updatedAt } = JSON.parse(result.data.updated)
+				$minselStore = [...$minselStore, { _id: _id, itemId: itemId, text: text, parentId: parentId, createdAt: createdAt, updatedAt: updatedAt }]
+				$minselStore = $minselStore
+				console.log("now $minselStore", $minselStore)
+				currentmidItemId = undefined
+				form = null
+			}
+		}
+	}}>
+	{#if form?.dupval}<p class="error" style="background-color: #fefefe; color: red;">itemIdが重複しています</p>{/if}
+	<input type="hidden" name="_id" />
+		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
+			<label for="itemId">itemId</label>
+			<input type="number" name="itemId" />
+		</div>
+		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
+			<label for="parentId_id">中分類選択</label>
+			<select name="parentId_id" bind:value={currentmidItemId} on:change={() => onChangeMidSel()}>
+				<option selected disabled value="中分類選択...">中分類選択...</option>
+				{#each $midselStore as p_elem}
+					<option value={p_elem._id}>{p_elem.text}</option>
+				{/each}
+					<option value={addNewMidChoice}>中分類作成...</option>
+			</select>
+		</div>
+		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
+			<label for="text">テキスト</label>
+			<input type="text" name="text" />
+		</div>
+		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
+	</form>
+	<button on:click={closeEditMinselModal} style="background-color: rgb(254 226 226);">Cancel</button>
+</EditMinselModal>
+{/if}
 
 <style>
 	form > input, div {

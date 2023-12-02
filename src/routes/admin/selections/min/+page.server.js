@@ -1,3 +1,5 @@
+import { error, fail } from '@sveltejs/kit'
+
 import { SelectionModel, ChildModel, GrandChildModel } from '$lib/mongodb/models/Selection'
 import mongoose from 'mongoose'
 import pkg from 'mongoose'
@@ -56,28 +58,23 @@ export const actions = {
 		const text = data.get('text')?.toString() ?? ''
 		const parentId_id = data.get('parentId_id')
 
-		await connectDB()
-/*		const add_minresp = await fetch('/api/selections/min', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
+		try {
+			await connectDB()
+			let response = await GrandChildModel.create({
 				itemId: itemId,
 				parentId: parentId_id,
-				text: text
+				text: text,
 			})
-		})
-*/
-		let response = await GrandChildModel.create({
-			itemId: itemId,
-			parentId: parentId_id,
-			text: text,
-		})
-		response = await response.populate('parentId')
-		console.log("resese", response)
+			response = await response.populate('parentId')
 
-		return { added: JSON.stringify(response) }
+			return { added: JSON.stringify(response) }
+		}  catch (err) {
+			if (err.code === 11000 && err.keyPattern.itemId === 1) {
+				return fail(400, {
+						itemId, dupval: true
+				})
+			}
+		}
 	},
 	editminselpost: async ({ request }) => {
 		const data = await request.formData()
@@ -87,18 +84,24 @@ export const actions = {
 		const itemId = Number(data.get('itemId'))
 		const parentId_id = data.get('parentId_id').toString()
 		const text = data.get('text')?.toString() ?? ''
-
-		const resp = await GrandChildModel.findByIdAndUpdate(
+		try {
+			await connectDB()
+			const resp = await GrandChildModel.findByIdAndUpdate(
 			_id,
 			{
 				itemId: itemId,
 				parentId: parentId_id,
 				text: text,
 			}, { returnDocument: 'after' }
-		).populate('parentId').lean()
-		console.log("resp", resp)
-	
-		return { updated: JSON.stringify(resp) }
+			).populate('parentId').lean()
+			return { updated: JSON.stringify(resp) }
+		}  catch (err) {
+			if (err.code === 11000 && err.keyPattern.itemId === 1) {
+				return fail(400, {
+						itemId, dupval: true
+				})
+			}
+		}
 	},
 	addnewmid: async ({ request }) => {
 		const data = await request.formData()
