@@ -20,23 +20,23 @@
 
 	import { minselStore, midselStore, majaChoicesStore } from '../store'
 
-	const parent_elems = JSON.parse(data.majaselections).map((obj) => ({ _id: obj._id, itemId: obj.itemId, text: obj.text }))
-	majaChoicesStore.set(parent_elems)
+//	const parent_elems = JSON.parse(data.majaselections).map((obj) => ({ _id: obj._id, itemId: obj.itemId, text: obj.text }))
+	majaChoicesStore.set(JSON.parse(data["majaselections"]))
 
-	midselStore.set(JSON.parse(data.midselections))
+	midselStore.set(JSON.parse(data["midselections"]))
 
 	//
 	import AddNewMajaselModal from '../mid/AddNewMajaselModal.svelte'
-	import AddMinselModal from './AddMinselModal.svelte'
-	import EditMinselModal from './EditMinselModal.svelte'
+	import AddMidselModal from './AddMinselModal.svelte'
+	import EditMidselModal from './EditMinselModal.svelte'
 	import AddNewMidselModal from './AddNewMidselModal.svelte'
 	import InsertManyCsvModal from './InsertManyCsvModal.svelte'
 	import DeleteManyModal from './DeleteManyModal.svelte'
 	import DeleteMinselModal from './DeleteMinselModal.svelte'
 
 	let insertManyFlag = false
-	let addMinselModalOpen = false
-	let editMinselModalOpen = false
+	let addMidselModalOpen = false
+	let editMidselModalOpen = false
 	let deleteMinselModalOpen = false
 	let addNewMidselModalOpen = false
 	let addNewMajaselModalOpen = false
@@ -61,15 +61,15 @@
 		}
 	}
 	
-	const openMinselEditModal = async (row) => {
+	const openMidselEditModal = async (row) => {
 		console.log("row to edit: ", row)
 		currentMinselRowData = row
 //		parent_selected = 
-		editMinselModalOpen = true
+		editMidselModalOpen = true
 	}
 
-	const closeEditMinselModal = () => {
-		editMinselModalOpen = false
+	const closeEditMidselModal = () => {
+		editMidselModalOpen = false
 		// Clear store ?
 	}
 
@@ -112,7 +112,7 @@
 	}
 
 	const handleAddPost = async () => {
-		addMinselModalOpen = true
+		addMidselModalOpen = true
 	}
 
 	const handleInsertCsv = async () => {
@@ -151,7 +151,7 @@
 				<td>{row.itemId}</td>
 				<td>{row.parentId.text}</td>
 				<td>{row.text}</td>
-				<td class="btn-action"><button class="btn-edit" on:click={() => openMinselEditModal(row)}>編集</button></td>
+				<td class="btn-action"><button class="btn-edit" on:click={() => openMidselEditModal(row)}>編集</button></td>
 				<td class="btn-action"><button class="btn-delete" on:click={() => handleDeleteButton(row)}>削除</button></td>
 			</tr>
 		{/if}
@@ -222,53 +222,17 @@
 			<input type="text" name="maja_name" bind:value={newmaja_str} />
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
-		<button on:click={closeAddMajaselModal} style="background-color: rgb(254 226 226);">Cancel</button>
 	</form>
+	<button on:click={closeAddMajaselModal} style="background-color: rgb(254 226 226);">Cancel</button>
 </AddNewMajaselModal>
 
-<!-- Add New Mid selection modal -->
-<AddNewMidselModal visible={addNewMidselModalOpen}>
-	<h2>中分類を作成する</h2>
+<AddMidselModal visible={addMidselModalOpen}>
 	<form method="post" action="?/addnewmid" use:enhance={() => {
 		return async ({ result }) => {
 			invalidateAll()
 			await applyAction(result)
-			// Renew store
-			console.log("result: ", result.data)
 			// Close modal
-			addNewMidselModalOpen = false
-			$majaChoicesStore = [...$majaChoicesStore, { _id: result.data.added.inserted._id, itemId: result.data.added.inserted.itemId, text: result.data.added.inserted.text }] //, add_arr]
-			console.log("$majaChoicesStore", $majaChoicesStore)
-			currentMinselRowData.parentId.itemId = result.data.added.inserted.itemId //  switch to the Action newly created
-		}
-	}}>
-		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="parentId_id">大分類選択</label>
-			<select name="parentId_id" bind:value={currentmajaItemId} on:change={() => onChangeMajaSel(currentMidselRowData)}>
-					<option selected disabled value="大分類を選択...">大分類を選択...</option>
-				{#each $majaChoicesStore as p_elem}
-					<option value={p_elem._id}>{p_elem._id}</option>
-				{/each}
-				<option value={addNewMajaChoice}>大分類作成...</option>
-			</select>
-		</div>
-	
-		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="mid_name">中分類の名前</label>
-			<input type="text" name="mid_name" bind:value={newmid_str} />
-		</div>
-		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
-		<button on:click={closeAddMidselModal} style="background-color: rgb(254 226 226);">Cancel</button>
-	</form>
-</AddNewMidselModal>
-
-<AddMinselModal visible={addMinselModalOpen}>
-	<form method="post" action="?/addminselpost" use:enhance={() => {
-		return async ({ result }) => {
-			invalidateAll()
-			await applyAction(result)
-			// Close modal
-			addMinselModalOpen = false
+			addMidselModalOpen = false
 			// Renew store
 			const { _id, itemId, text, parentId, createdAt, updatedAt } = JSON.parse(result.data.added)
 			console.log("parentId", parentId)
@@ -282,12 +246,13 @@
 			<input type="number" name="itemId" />
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="parentId_id">中分類選択</label>
-			<select name="parentId_id" bind:value={currentmidItemId} on:change={() => onChangeMidSel(currentMinselRowData)}>
-				{#each $midselStore as p_elem}
+			<label for="parentId_id">大分類選択</label>
+			<select name="parentId_id" bind:value={currentmajaItemId} on:change={() => onChangeMajaSel(currentMidselRowData)}>
+				<option selected disabled value="大分類を選択...">大分類を選択...</option>
+				{#each $majaChoicesStore as p_elem}
 					<option value={p_elem._id}>{p_elem.text}</option>
 				{/each}
-					<option value={addNewMidChoice}>中分類作成...</option>
+					<option value={addNewMajaChoice}>大分類作成...</option>
 			</select>
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
@@ -296,11 +261,11 @@
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
 	</form>
-	<button on:click={() => addMinselModalOpen = false} style="background-color: rgb(254 226 226);">Cancel</button>
-</AddMinselModal>
+	<button on:click={() => addMidselModalOpen = false} style="background-color: rgb(254 226 226);">Cancel</button>
+</AddMidselModal>
 
 <!-- Edit Midsel Modal -->
-<EditMinselModal visible={editMinselModalOpen}>
+<EditMidselModal visible={editMidselModalOpen}>
 	<form method="post" action="?/editminselpost" use:enhance={() => {
 		return async ({ result }) => {
 			invalidateAll()
@@ -308,7 +273,7 @@
 			// Renew store
 			const { _id, itemId, text, parentId } = JSON.parse(result.data.updated)
 			// Close modal
-			editMinselModalOpen = false
+			editMidselModalOpen = false
 //			const xloc = $minselStore.findIndex((elem) => elem._id === _id)
 //			$minselStore.splice(xloc, 1, { _id: _id, itemId: itemId, text: text, "parentId.text": parentId.text })
 			$minselStore = $minselStore
@@ -334,8 +299,8 @@
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
 	</form>
-	<button on:click={closeEditMinselModal} style="background-color: rgb(254 226 226);">Cancel</button>
-</EditMinselModal>
+	<button on:click={closeEditMidselModal} style="background-color: rgb(254 226 226);">Cancel</button>
+</EditMidselModal>
 
 <style>
 	form > input, div {
