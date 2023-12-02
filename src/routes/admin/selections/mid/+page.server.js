@@ -79,7 +79,7 @@ export const actions = {
 
 		return { added: JSON.stringify(response) }
 	},
-	editminselpost: async ({ request }) => {
+	editmidselpost: async ({ request }) => {
 		const data = await request.formData()
 		console.log("minsel data: ", data)
 

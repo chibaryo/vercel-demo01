@@ -64,8 +64,9 @@
 	
 	const openMidselEditModal = async (row) => {
 		console.log("row to edit: ", row)
-		currentMinselRowData = row
-//		parent_selected = 
+		currentMidselRowData = row
+		currentmajaItemId = currentMidselRowData.parentId._id
+		console.log("currentMidselRowData.parentId.text", currentMidselRowData.parentId.text)
 		editMidselModalOpen = true
 	}
 
@@ -141,7 +142,7 @@
 	<thead>
 		<tr>
 			<th>itemId</th>
-			<th>中分類ジャンル</th>
+			<th>大分類ジャンル</th>
 			<th>テキスト</th>
 			<th colspan="2">操作</th>
 		</tr>
@@ -268,7 +269,7 @@
 
 <!-- Edit Midsel Modal -->
 <EditMidselModal visible={editMidselModalOpen}>
-	<form method="post" action="?/editminselpost" use:enhance={() => {
+	<form method="post" action="?/editmidselpost" use:enhance={() => {
 		return async ({ result }) => {
 			invalidateAll()
 			await applyAction(result)
@@ -281,23 +282,23 @@
 			$minselStore = $minselStore
 		}
 	}}>
-		<input type="hidden" name="_id" bind:value={currentMinselRowData._id} />
+		<input type="hidden" name="_id" bind:value={currentMidselRowData._id} />
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="itemId">itemId</label>
-			<input type="number" name="itemId" bind:value={currentMinselRowData.itemId} />
+			<input type="number" name="itemId" bind:value={currentMidselRowData.itemId} />
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="parentId_id">中分類選択</label>
-			<select name="parentId_id" bind:value={currentmidItemId} on:change={() => onChangeMidSel(currentMinselRowData)}>
-				{#each $midselStore as p_elem}
+			<label for="parentId_id">大分類選択:</label>
+			<select name="parentId_id" bind:value={currentmajaItemId} on:change={() => onChangeMidSel()}>
+				{#each $majaChoicesStore as p_elem}
 					<option value={p_elem._id}>{p_elem.text}</option>
 				{/each}
-					<option value={addNewMidChoice}>中分類作成...</option>
+					<option value={addNewMidChoice}>大分類作成...</option>
 			</select>
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="text">テキスト</label>
-			<input type="text" name="text" bind:value={currentMinselRowData.text} />
+			<input type="text" name="text" bind:value={currentMidselRowData.text} />
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
 	</form>

@@ -8,7 +8,6 @@
 	export let data
 	majaChoicesStore.set(JSON.parse(data["majaselections"]))
 
-
 	//
 	import AddNewMajaselModal from  '../mid/AddNewMajaselModal.svelte'
 	import DeleteMajaselModal from './DeleteMajaselModal.svelte'
