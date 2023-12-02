@@ -10,3 +10,4 @@ export const minSelectedStore = writable()
 export const gptchatStrStore = writable('')
 
 export const vectStore = writable([])
+export const isVisibleGptAnswerBox = writable(false)

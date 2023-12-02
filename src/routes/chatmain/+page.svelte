@@ -9,9 +9,9 @@
 	//	import DarkSwitcher from './DarkSwitcher.svelte'
 	let message
 	let loading = false
-	let isVisibleGptAnswerBox = false
+//	export let isVisibleGptAnswerBox
 
-	import { majaArray, midArray, minArray, majaSelectedStore, midSelectedStore, minSelectedStore, gptchatStrStore } from './store'
+	import { isVisibleGptAnswerBox, majaArray, midArray, minArray, majaSelectedStore, midSelectedStore, minSelectedStore, gptchatStrStore } from './store'
 
 	/** @type {import('./$types').PageData} */
 	export let data
@@ -162,7 +162,7 @@
 		{/if}
 
 		<!-- GPT answer -->
-		{#if isVisibleGptAnswerBox}
+		{#if $isVisibleGptAnswerBox}
 		<div class="talk_wrapper" style="display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: 2fr; gap: 6px; margin-bottom: 0rem;">
 			<div class="prof_thumbnail" style="padding-top: 4px; padding-left: 2px; grid-column: 1/2; grid-row: 1/2; width: 3.25rem; display: flex; flex-flow: column; justify-content: start;">
 				<img src={gptIcon} alt="" style="padding: 0; margin: 0; display:inline-block; border-radius: 50%"/>
@@ -190,7 +190,7 @@
 	action="/chatmain"
 	use:enhance={() => {
 		loading = true
-		isVisibleGptAnswerBox = true
+		$isVisibleGptAnswerBox = true
 		$gptchatStrStore = ''
 
 		return async ({ result }) => {

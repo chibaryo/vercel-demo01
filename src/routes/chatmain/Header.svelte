@@ -1,12 +1,15 @@
 <script>
 //	import { css } from 'styled-system/css'
+	import resetIcon from '$lib/assets/icons/reload.svg'
 	export let title // : string
-	import { majaSelectedStore, midSelectedStore, minSelectedStore } from './store'
+	import { isVisibleGptAnswerBox, majaSelectedStore, midSelectedStore, minSelectedStore, gptchatStrStore } from './store'
 
 	const resetSelections = () => {
 		majaSelectedStore.set({id: 0, text: ''})
 		midSelectedStore.set({id: 0, text: ''})
 		minSelectedStore.set({id: 0, text: ''})
+		gptchatStrStore.set('')
+		isVisibleGptAnswerBox.set(false)
 	}
 </script>
 
@@ -28,7 +31,7 @@
 <span style="display: inline-block; grid-column: 5 / span 2; font-size: 1.125rem; line-height: 1.75rem; color: #ffffff; justify-self: center;">{ title }</span>
 
 <button on:click={() => resetSelections()} style="width: 1.875rem; grid-column: 12 / span 1;">
-	<img src="/src/lib/assets/icons/reload.svg" alt="" />
+	<img src={resetIcon} alt="reset" />
 </button>
 </div>
 
