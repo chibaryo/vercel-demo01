@@ -88,7 +88,7 @@ export const actions = {
 		const parentId_id = data.get('parentId_id').toString()
 		const text = data.get('text')?.toString() ?? ''
 
-		const resp = await GrandChildModel.findByIdAndUpdate(
+		const resp = await ChildModel.findByIdAndUpdate(
 			_id,
 			{
 				itemId: itemId,
@@ -115,7 +115,7 @@ export const actions = {
 		}) */
 		const total_length = mid_resp.length
 
-		const add_midresp = await ChildModel.create({
+		let add_midresp = await ChildModel.create({
 			itemId: total_length + 1,
 			parentId: parentId_id,
 			text: text
@@ -131,7 +131,7 @@ export const actions = {
 			})
 		})
 */
-//		const add_majadata = await add_midresp.json()
+		add_midresp = await add_midresp.populate('parentId')
 
 		return { added: JSON.stringify(add_midresp) } // add_majadata.inserted.itemId
 	},

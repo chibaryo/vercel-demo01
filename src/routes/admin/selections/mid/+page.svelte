@@ -33,12 +33,12 @@
 	import AddNewMidselModal from './AddNewMidselModal.svelte'
 	import InsertManyCsvModal from './InsertManyCsvModal.svelte'
 	import DeleteManyModal from './DeleteManyModal.svelte'
-	import DeleteMinselModal from './DeleteMinselModal.svelte'
+	import DeleteMidselModal from './DeleteMidselModal.svelte'
 
 	let insertManyFlag = false
 	let addMidselModalOpen = false
 	let editMidselModalOpen = false
-	let deleteMinselModalOpen = false
+	let deleteMidselModalOpen = false
 	let addNewMidselModalOpen = false
 	let addNewMajaselModalOpen = false
 	let deleteManyModalOpen = false
@@ -73,6 +73,7 @@
 	const closeEditMidselModal = () => {
 		editMidselModalOpen = false
 		// Clear store ?
+		currentmajaItemId = undefined
 	}
 
 	const closeAddMajaselModal = () => {
@@ -85,9 +86,9 @@
 	}
 
 	const handleDeleteButton = async (row) => {
-		currentMinselRowData = row
-		console.log("currentMinselRowData", currentMinselRowData)
-		deleteMinselModalOpen = true
+		currentMidselRowData = row
+		console.log("currentMidselRowData", currentMidselRowData)
+		deleteMidselModalOpen = true
 	}
 
 	const deleteRow = async (_id) => {
@@ -108,10 +109,10 @@
 			return row._id != deldata.deleted._id
 		})
 		console.log("$midselStore", $midselStore)
-		deleteMinselModalOpen = false
+		deleteMidselModalOpen = false
 	}
 	const closeDeleteMinselModal = () => {
-		deleteMinselModalOpen = false
+		deleteMidselModalOpen = false
 	}
 
 	const handleAddPost = async () => {
@@ -164,13 +165,13 @@
 </section>
 
 <!-- Delete Midsel modal -->
-<DeleteMinselModal visible={deleteMinselModalOpen}>
+<DeleteMidselModal visible={deleteMidselModalOpen}>
 	<h2>削除しますか？</h2>
-	<div class="background-color: rgb(231 229 228); display: flex; flex-flow: column;">{currentMinselRowData.itemId}</div>
-	<p>{currentMinselRowData.text}</p>
-	<button on:click={() => deleteRow(currentMinselRowData._id)}>削除</button>
+	<div class="background-color: rgb(231 229 228); display: flex; flex-flow: column;">{currentMidselRowData.itemId}</div>
+	<p>{currentMidselRowData.text}</p>
+	<button on:click={() => deleteRow(currentMidselRowData._id)}>削除</button>
 	<button on:click={closeDeleteMinselModal} style="background-color: rgb(254 226 226);">キャンセル</button>
-</DeleteMinselModal>
+</DeleteMidselModal>
 
 <!-- delete many -->
 <DeleteManyModal visible={deleteManyModalOpen}>
@@ -239,9 +240,9 @@
 			// Renew store
 			const { _id, itemId, text, parentId, createdAt, updatedAt } = JSON.parse(result.data.added)
 			console.log("parentId", parentId)
-			$minselStore = [...$minselStore, { _id: _id, itemId: itemId, text: text, parentId: parentId, createdAt: createdAt, updatedAt: updatedAt }]
-			$minselStore = $minselStore
-			console.log("now $minselStore", $minselStore)
+			$midselStore = [...$midselStore, { _id: _id, itemId: itemId, text: text, parentId: parentId, createdAt: createdAt, updatedAt: updatedAt }]
+			$midselStore = $midselStore
+			currentmajaItemId = undefined
 		}
 	}}>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
@@ -275,11 +276,12 @@
 			await applyAction(result)
 			// Renew store
 			const { _id, itemId, text, parentId } = JSON.parse(result.data.updated)
+			console.log("_id, itemId, text, parentId ", _id + itemId + text + parentId)
 			// Close modal
 			editMidselModalOpen = false
-//			const xloc = $minselStore.findIndex((elem) => elem._id === _id)
-//			$minselStore.splice(xloc, 1, { _id: _id, itemId: itemId, text: text, "parentId.text": parentId.text })
-			$minselStore = $minselStore
+			const xloc = $midselStore.findIndex((elem) => elem._id === _id)
+			$midselStore.splice(xloc, 1, { _id: _id, itemId: itemId, text: text, parentId: parentId })
+			$midselStore = $midselStore
 		}
 	}}>
 		<input type="hidden" name="_id" bind:value={currentMidselRowData._id} />
