@@ -1,5 +1,5 @@
 import * as getVectController from '$lib/mongodb/controller/getVectController'
-//import { OPENAI_APIKEY } from '$env/static/private'
+import { OPENAI_APIKEY } from '$env/static/private'
 
 const dot = (vect_a, vect_b) => {
 	let product = 0
@@ -18,7 +18,7 @@ const get_embedding = async (your_prompt) => {
 	const resp = await fetch(url, {
 		method: 'POST',
 		headers: {
-			'Authorization': `Bearer ${process.env.OPENAI_APIKEY}`,
+			'Authorization': `Bearer ${OPENAI_APIKEY}`,
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
