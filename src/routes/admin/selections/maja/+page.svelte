@@ -8,6 +8,9 @@
 	export let data
 	majaChoicesStore.set(JSON.parse(data["majaselections"]))
 
+	/** @type {import('./$types').ActionData} */
+	export let form
+
 	//
 	import AddNewMajaselModal from  '../mid/AddNewMajaselModal.svelte'
 	import DeleteMajaselModal from './DeleteMajaselModal.svelte'
@@ -34,6 +37,10 @@
 		currentMajaselRowData = row
 //		parent_selected = 
 		editMajaselModalOpen = true
+	}
+	const closeMajaselEditModal = async () => {
+		editMajaselModalOpen = false
+		form = null
 	}
 
 	const handleDeleteButton = async (row) => {
@@ -129,17 +136,21 @@
 		return async ({ result }) => {
 			invalidateAll()
 			await applyAction(result)
-			// Renew store
-			const { _id, itemId, text, createdAt, updatedAt } = JSON.parse(result.data.updated)
-			// Close modal
-			editMajaselModalOpen = false
-			// locate: Modified _id = JSON.parse(result.data.updated)["_id"]
-			const xloc = $majaChoicesStore.findIndex((elem) => elem._id === _id)
-			$majaChoicesStore.splice(xloc, 1, { _id: _id, itemId: itemId, text: text, createdAt: createdAt, updatedAt: updatedAt })
-			$majaChoicesStore = $majaChoicesStore
-//			currentMinselRowData.parentId.itemId = result.data.added.inserted.itemId //  switch to the Action newly created
+			if (result.data) {
+				// Renew store
+				const { _id, itemId, text, createdAt, updatedAt } = JSON.parse(result.data.updated)
+				// Close modal
+				editMajaselModalOpen = false
+				// locate: Modified _id = JSON.parse(result.data.updated)["_id"]
+				const xloc = $majaChoicesStore.findIndex((elem) => elem._id === _id)
+				$majaChoicesStore.splice(xloc, 1, { _id: _id, itemId: itemId, text: text, createdAt: createdAt, updatedAt: updatedAt })
+				$majaChoicesStore = $majaChoicesStore
+				form = null
+	//			currentMinselRowData.parentId.itemId = result.data.added.inserted.itemId //  switch to the Action newly created
+			}
 		}
 	}}>
+	{#if form?.dupval}<p class="error" style="background-color: #fefefe; color: red;">itemIdが重複しています</p>{/if}
 		<input type="hidden" name="_id" bind:value={currentMajaselRowData._id} />
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="id">itemId</label>
@@ -151,7 +162,7 @@
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
 	</form>
-	<button on:click={() => editMajaselModalOpen = false} style="background-color: rgb(254 226 226);">Cancel</button>
+	<button on:click={() => closeMajaselEditModal()} style="background-color: rgb(254 226 226);">Cancel</button>
 </EditMajaselModal>
 
 <style>

@@ -1,5 +1,6 @@
 import { SelectionModel } from '$lib/mongodb/models/Selection'
 import { connectDB } from '$lib/mongodb/plugins/dbconnection'
+import { error, fail } from '@sveltejs/kit'
 
 export const load = (async () => {
 	await connectDB()
@@ -32,14 +33,22 @@ export const actions = {
 		const itemId = Number(data.get('itemId'))
 		const text = data.get('text')?.toString() ?? ''
 
-		const resp = await SelectionModel.findByIdAndUpdate(
+		try {
+			const resp = await SelectionModel.findByIdAndUpdate(
 				_id,
 			{
 				itemId: itemId,
 				text: text,
 			}, { returnDocument: 'after' }
 		)
-	
 		return { updated: JSON.stringify(resp) }
+
+		} catch (err) {
+			if (err.code === 11000 && err.keyPattern.itemId === 1) {
+				return fail(400, {
+						itemId, dupval: true
+				})
+			}
+		}
 	}
 } // satisfies Actions
