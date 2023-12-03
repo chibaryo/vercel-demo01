@@ -182,10 +182,16 @@
 
 <!-- delete many -->
 <DeleteManyModal visible={deleteManyModalOpen}>
-	<form method="post" action="?/deletebycsv" enctype="multipart/form-data">
+	<form method="post" action="?/deletebycsv" enctype="multipart/form-data" use:enhance={() => {
+		return async ({ result }) => {
+			invalidateAll()
+			await applyAction(result)
+			// Do something
+		}
+	}}>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="file">File</label>
-			<input type="file" name="target" />
+			<label for="sourcefile">File</label>
+			<input type="file" name="sourcefile" />
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="lowerlimit">範囲(from)</label>
@@ -196,20 +202,26 @@
 			<input type="number" name="upperlimit" />
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
-		<button on:click={() => closeDeleteMany()} style="background-color: rgb(254 226 226);">Cancel</button>
 	</form>
+	<button on:click={() => closeDeleteMany()} style="background-color: rgb(254 226 226);">Cancel</button>
 </DeleteManyModal>
 
 <!-- insert many -->
 <InsertManyCsvModal visible={insertManyFlag}>
-	<form method="post" action="?/addbycsv" enctype="multipart/form-data">
+	<form method="post" action="?/addbycsv" enctype="multipart/form-data" use:enhance={() => {
+		return async ({ result }) => {
+			invalidateAll()
+			await applyAction(result)
+			// Do something
+		}
+	}}>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="file">File</label>
-			<input type="file" name="target" />
+			<label for="sourcefile">File</label>
+			<input type="file" name="sourcefile" />
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
-		<button on:click={() => closeInsertMany()} style="background-color: rgb(254 226 226);">Cancel</button>
 	</form>
+	<button on:click={() => closeInsertMany()} style="background-color: rgb(254 226 226);">Cancel</button>
 </InsertManyCsvModal>
 
 <!-- Add New Major selection modal -->
