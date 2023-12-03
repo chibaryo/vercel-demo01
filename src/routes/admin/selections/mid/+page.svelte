@@ -20,7 +20,6 @@
 	let addNewMajaChoice = 999999
 
 	let currentMidselRowData
-	let currentMinselRowData
 
 	import { minselStore, midselStore, majaChoicesStore } from '../store'
 
@@ -38,6 +37,7 @@
 	import DeleteManyModal from './DeleteManyModal.svelte'
 	import DeleteMidselModal from './DeleteMidselModal.svelte'
 
+	let addNewMidselFlag = false
 	let insertManyFlag = false
 	let addMidselModalOpen = false
 	let editMidselModalOpen = false
@@ -75,6 +75,7 @@
 
 	const closeEditMidselModal = () => {
 		editMidselModalOpen = false
+		addNewMidselFlag = false
 		// Clear store ?
 		currentmajaItemId = undefined
 		form = null
@@ -120,7 +121,9 @@
 	}
 
 	const handleAddPost = async () => {
-		addMidselModalOpen = true
+		addNewMidselFlag = true
+//		addMidselModalOpen = true
+		editMidselModalOpen = true
 	}
 
 	const handleInsertCsv = async () => {
@@ -234,45 +237,8 @@
 	<button on:click={closeAddMajaselModal} style="background-color: rgb(254 226 226);">Cancel</button>
 </AddNewMajaselModal>
 
-<AddMidselModal visible={addMidselModalOpen}>
-	<form method="post" action="?/addnewmid" use:enhance={() => {
-		return async ({ result }) => {
-			invalidateAll()
-			await applyAction(result)
-			// Close modal
-			addMidselModalOpen = false
-			// Renew store
-			const { _id, itemId, text, parentId, createdAt, updatedAt } = JSON.parse(result.data.added)
-			console.log("parentId", parentId)
-			$midselStore = [...$midselStore, { _id: _id, itemId: itemId, text: text, parentId: parentId, createdAt: createdAt, updatedAt: updatedAt }]
-			$midselStore = $midselStore
-			currentmajaItemId = undefined
-		}
-	}}>
-		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="itemId">itemId</label>
-			<input type="number" name="itemId" />
-		</div>
-		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="parentId_id">大分類選択</label>
-			<select name="parentId_id" bind:value={currentmajaItemId} on:change={() => onChangeMajaSel()}>
-				<option selected disabled value="大分類を選択...">大分類を選択...</option>
-				{#each $majaChoicesStore as p_elem}
-					<option value={p_elem._id}>{p_elem.text}</option>
-				{/each}
-					<option value={addNewMajaChoice}>大分類作成...</option>
-			</select>
-		</div>
-		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
-			<label for="text">text</label>
-			<input type="text" name="text" />
-		</div>
-		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
-	</form>
-	<button on:click={() => closeAddMidselModal()} style="background-color: rgb(254 226 226);">Cancel</button>
-</AddMidselModal>
-
-<!-- Edit Midsel Modal -->
+<!-- Edit / Add Midsel Modal -->
+{#if addNewMidselFlag === false}
 <EditMidselModal visible={editMidselModalOpen}>
 	<form method="post" action="?/editmidselpost" use:enhance={() => {
 		return async ({ result }) => {
@@ -298,6 +264,7 @@
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="parentId_id">大分類選択:</label>
 			<select name="parentId_id" bind:value={currentmajaItemId} on:change={() => onChangeMidSel()}>
+				<option selected disabled value="大分類選択...">大分類選択...</option>
 				{#each $majaChoicesStore as p_elem}
 					<option value={p_elem._id}>{p_elem.text}</option>
 				{/each}
@@ -312,6 +279,47 @@
 	</form>
 	<button on:click={closeEditMidselModal} style="background-color: rgb(254 226 226);">Cancel</button>
 </EditMidselModal>
+{:else if addNewMidselFlag === true} <!-- Add new post -->
+<EditMidselModal visible={editMidselModalOpen}>
+	<form method="post" action="?/addmidselpost" use:enhance={() => {
+		return async ({ result }) => {
+			invalidateAll()
+			await applyAction(result)
+			// Renew store
+			const { _id, itemId, text, parentId } = JSON.parse(result.data.updated)
+			console.log("_id, itemId, text, parentId ", _id + itemId + text + parentId)
+			// Close modal
+			editMidselModalOpen = false
+			const xloc = $midselStore.findIndex((elem) => elem._id === _id)
+			$midselStore.splice(xloc, 1, { _id: _id, itemId: itemId, text: text, parentId: parentId })
+			$midselStore = $midselStore
+			form = null
+		}
+	}}>
+	{#if form?.dupval}<p class="error" style="background-color: #fefefe; color: red;">itemIdが重複しています</p>{/if}
+		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
+			<label for="itemId">itemId</label>
+			<input type="number" name="itemId" required />
+		</div>
+		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
+			<label for="parentId_id">大分類選択:</label>
+			<select name="parentId_id" bind:value={currentmajaItemId} on:change={() => onChangeMidSel()}>
+				<option selected disabled value="大分類選択...">大分類選択...</option>
+				{#each $majaChoicesStore as p_elem}
+					<option value={p_elem._id}>{p_elem.text}</option>
+				{/each}
+					<option value={addNewMidChoice}>大分類作成...</option>
+			</select>
+		</div>
+		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
+			<label for="text">テキスト</label>
+			<input type="text" name="text" required />
+		</div>
+		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
+	</form>
+	<button on:click={closeEditMidselModal} style="background-color: rgb(254 226 226);">Cancel</button>
+</EditMidselModal>
+{/if}
 
 <style>
 	form > input, div {

@@ -90,6 +90,7 @@ export const actions = {
 		const text = data.get('text')?.toString() ?? ''
 
 		try {
+			await connectDB()
 			const resp = await ChildModel.findByIdAndUpdate(
 			_id,
 			{
@@ -109,40 +110,34 @@ export const actions = {
 			}
 		}
 	},
-	addnewmid: async ({ request }) => {
+	addmidselpost: async ({ request }) => {
 		const data = await request.formData()
 		console.log("add new mid data: ", data)
 
+		const itemId = data.get('itemId')
 		const text = data.get('text')?.toString() ?? ''
 		const parentId_id = data.get('parentId_id').toString() ?? ''
 
 		// Get total mid items:
-		await connectDB()
-		const mid_resp = await ChildModel.find({}).sort({ itemId: 1 }).lean()
-/*		const mid_resp =  await fetch('/api/selections/mid', {
-			method: 'GET'
-		}) */
-		const total_length = mid_resp.length
+		try {
+			await connectDB()
 
-		let add_midresp = await ChildModel.create({
-			itemId: total_length + 1,
-			parentId: parentId_id,
-			text: text
-		})
-/*		const add_midresp = await fetch('/api/selections/mid', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				itemId: total_length + 1,
-				text: mid_name
+			let add_midresp = await ChildModel.create({
+				itemId: itemId,
+				parentId: parentId_id,
+				text: text
 			})
-		})
-*/
+
 		add_midresp = await add_midresp.populate('parentId')
 
 		return { added: JSON.stringify(add_midresp) } // add_majadata.inserted.itemId
+		} catch (err) {
+			if (err.code === 11000 && err.keyPattern.itemId === 1) {
+				return fail(400, {
+						itemId, dupval: true
+				})
+			}
+		}
 	},
 	addnewmaja: async ({ request }) => {
 		const data = await request.formData()

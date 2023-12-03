@@ -40,6 +40,7 @@
 	}
 	const closeMajaselModal = async () => {
 		editMajaselModalOpen = false
+		addNewMajaselFlag = false
 		form = null
 	}
 
