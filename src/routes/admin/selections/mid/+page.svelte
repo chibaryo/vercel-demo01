@@ -213,11 +213,16 @@
 			invalidateAll()
 			await applyAction(result)
 			if (result.data) {
-				const tmp_arr = JSON.parse(result.data.added).map(obj => { return { _id: obj._id, itemId: obj.itemId, text: obj.text, parentId: obj.parentId } })
-				console.log("tmp_arr", tmp_arr)
-				// Do something
+				const tmp_arr = JSON.parse(result.data.added).map(obj => {
+					return {
+						_id: obj._id,
+						itemId: obj.itemId,
+						text: obj.text,
+						parentId: obj.parentId
+					}
+				})
+				// Renew store
 				$midselStore = [...$midselStore, ...tmp_arr]
-//				$midselStore = $midselStore
 				console.log("$midselStore", $midselStore)
 				insertManyFlag = false
 			}
