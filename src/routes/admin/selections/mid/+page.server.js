@@ -37,37 +37,38 @@ export const actions = {
 		let csvArray = new Uint8Array(await csv.arrayBuffer())
 		const str = new TextDecoder().decode(csvArray)
 		const lines = str.split('\r\n')
-		let tmp_arr = []
-		const obj = Object.assign({}, lines.filter(i => {
+
+		const obj = await Promise.all(lines.filter(i => {
 			const csv_row = i.split(',')
 			if (Number(csv_row[0]) >= 1)
 				return true
-		}).map((item) => ({
-			itemId: item[0]
-		})))
+		}).map(async (item) => ({
+				itemId: Number(item.split(',')[0]),
+				parentId: (await SelectionModel.aggregate(
+					[
+						{
+							$match:
+							{
+								itemId: { $eq: Number(item.split(',')[1]) }
+							}
+						},
+						{
+							$project: { _id: true }
+						}
+					]
+					)
+				)[0]['_id'].toString(),
+				text: item.split(',')[2]
+			})
+		))
 		console.log("obj: ", obj)
 
-		const csv_rows = lines.filter(async (i) => {
-			const csv_row = i.split(',')
-			if (Number(csv_row[0]) >= 1){
-//				let parentId_id = await SelectionModel.find({ itemId: csv_row[1] }).lean()
-//				console.log("parentId_id", parentId_id[0]["_id"].toString())
-//				tmp_arr.push({ itemId: Number(csv_row[0]), parentId: parentId_id[0]["_id"].toString(), text: csv_row[2] })
-				return true
-			}
-		})
-
-
 		await connectDB()
-		csv_rows.shift()
-//		console.log("tmp_arr: ", tmp_arr)
-		console.log("csv_rows: ", csv_rows)
 
-//		const addmany_resp = await ChildModel.insertMany(tmp_arr)
-//		console.log("addmany_resp", addmany_resp)
+		let addmany_resp = await ChildModel.insertMany(obj, { populate: 'parentId' })
+		console.log("addmany_resp", addmany_resp)
 
-//		return { added: JSON.stringify(addmany_resp) }
-		return
+		return { added: JSON.stringify(addmany_resp) }
 	},
 	addminselpost: async ({ request	}) => {
 		const data = await request.formData()

@@ -212,7 +212,15 @@
 		return async ({ result }) => {
 			invalidateAll()
 			await applyAction(result)
-			// Do something
+			if (result.data) {
+				const tmp_arr = JSON.parse(result.data.added).map(obj => { return { _id: obj._id, itemId: obj.itemId, text: obj.text, parentId: obj.parentId } })
+				console.log("tmp_arr", tmp_arr)
+				// Do something
+				$midselStore = [...$midselStore, ...tmp_arr]
+//				$midselStore = $midselStore
+				console.log("$midselStore", $midselStore)
+				insertManyFlag = false
+			}
 		}
 	}}>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
