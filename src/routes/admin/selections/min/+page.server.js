@@ -44,25 +44,44 @@ export const actions = {
 	},
 	addbycsv: async ({ request }) => {
 		const data = await request.formData()
-		const csv = data.get('target')
+		const csv = data.get('sourcefile')
 
 		console.log("csv.type: ", csv.type)
 		let csvArray = new Uint8Array(await csv.arrayBuffer())
 		const str = new TextDecoder().decode(csvArray)
 		const lines = str.split('\r\n')
-		let tmp_arr = []
-		const csv_rows = lines.filter(i => {
-			const csv_row = i.split(',')
-			if (Number(csv_row[0]) >= 1){
-				tmp_arr.push({ itemId: Number(csv_row[0]), parentId: csv_row[1], text: csv_row[2] })
-				return true
-			}
-		})
 
-		const addmany_resp = await GrandChildModel.insertMany(tmp_arr)
+		const obj = await Promise.all(lines.filter(i => {
+			const csv_row = i.split(',')
+			if (Number(csv_row[0]) >= 1)
+				return true
+		}).map(async (item) => ({
+				itemId: Number(item.split(',')[0]),
+				parentId: (await ChildModel.aggregate(
+					[
+						{
+							$match:
+							{
+								itemId: { $eq: Number(item.split(',')[1]) }
+							}
+						},
+						{
+							$project: { _id: true }
+						}
+					]
+					)
+				)[0]['_id'].toString(),
+				text: item.split(',')[2]
+			})
+		))
+		console.log("obj: ", obj)
+
+		await connectDB()
+
+		let addmany_resp = await GrandChildModel.insertMany(obj, { populate: 'parentId' })
 		console.log("addmany_resp", addmany_resp)
 
-		return
+		return { added: JSON.stringify(addmany_resp) }
 	},
 	addminselpost: async ({ request	}) => {
 		const data = await request.formData()
