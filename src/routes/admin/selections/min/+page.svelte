@@ -15,6 +15,13 @@
 	let currentmidItemId
 	let currentmajaItemId
 
+	const aryMax = (a, b) => {return Math.max(a, b)}
+	const aryMin = (a, b) => {return Math.min(a, b)}
+	let upperlimit
+	$: upperlimit = $minselStore.map((obj) => obj.itemId).reduce(aryMax, 1)
+	let lowerlimit
+	$: lowerlimit = $minselStore.map((obj) => obj.itemId).reduce(aryMin, 1)
+
 	let addNewMidChoice = 999999
 	let addNewMajaChoice = 999999
 
@@ -133,9 +140,12 @@
 	}
 	const closeInsertMany = () => {
 		insertManyFlag = false
+		form = null
 	}
 	const handleMultiRowDelete = async () => {
 		deleteManyModalOpen = true
+
+		console.log("upperlimit: ", upperlimit)
 	}
 	const closeDeleteMany = () => {
 		deleteManyModalOpen = false
@@ -208,11 +218,11 @@
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="lowerlimit">範囲(from)</label>
-			<input type="number" name="lowerlimit" />
+			<input type="number" name="lowerlimit" min={lowerlimit} max={upperlimit} />
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="upperlimit">範囲(to)</label>
-			<input type="number" name="upperlimit" />
+			<input type="number" name="upperlimit" min={lowerlimit} max={upperlimit} />
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
 	</form>
@@ -221,11 +231,12 @@
 
 <!-- insert many -->
 <InsertManyCsvModal visible={insertManyFlag}>
-	<form method="post" action="?/addbycsv" enctype="multipart/form-data" use:enhance={() => {
+	<form method="post" action="?/addbycsv" enctype="multipart/form-data" use:enhance={({ formData }) => {
 		return async ({ result }) => {
 			invalidateAll()
 			await applyAction(result)
 			if (result.data) {
+				console.log("result.data", result.data)
 				const tmp_arr = JSON.parse(result.data.added).map(obj => {
 					return {
 						_id: obj._id,
@@ -241,6 +252,7 @@
 			}
 		}
 	}}>
+		{#if form?.dupval}<p class="error" style="background-color: #fefefe; color: red;">itemIdが重複しています</p>{/if}
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="sourcefile">File</label>
 			<input type="file" name="sourcefile" />
@@ -356,7 +368,7 @@
 	<button on:click={closeEditMinselModal} style="background-color: rgb(254 226 226);">Cancel</button>
 </EditMinselModal>
 
-{:else if addMinselModalFlag === true}
+{:else if addMinselModalFlag === true} <!-- Add new post -->
 <EditMinselModal visible={editMinselModalOpen}>
 	<form method="post" action="?/addminselpost" use:enhance={({ formData, cancel }) => {
 		console.log("formData: ", formData)
@@ -382,7 +394,7 @@
 	<input type="hidden" name="_id" />
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="itemId">itemId</label>
-			<input type="number" name="itemId" />
+			<input type="number" name="itemId" min={lowerlimit} />
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="parentId_id">中分類選択</label>

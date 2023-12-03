@@ -76,12 +76,19 @@ export const actions = {
 		))
 		console.log("obj: ", obj)
 
-		await connectDB()
+		try {
+			await connectDB()
+			let addmany_resp = await GrandChildModel.insertMany(obj, { populate: 'parentId' })
+			console.log("addmany_resp", addmany_resp)
 
-		let addmany_resp = await GrandChildModel.insertMany(obj, { populate: 'parentId' })
-		console.log("addmany_resp", addmany_resp)
-
-		return { added: JSON.stringify(addmany_resp) }
+			return { added: JSON.stringify(addmany_resp) }
+		} catch (err) {
+			if (err.code === 11000) {
+				return fail(400, {
+						dupval: true
+				})
+			}
+		}
 	},
 	addminselpost: async ({ request	}) => {
 		const data = await request.formData()

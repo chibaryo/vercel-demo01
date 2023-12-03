@@ -14,7 +14,13 @@
 	let newmaja_str
 	let currentmidItemId
 	let currentmajaItemId
-	console.log("currentmajaItemId", currentmajaItemId)
+
+	const aryMax = (a, b) => {return Math.max(a, b)}
+	const aryMin = (a, b) => {return Math.min(a, b)}
+	let upperlimit
+	$: upperlimit = $midselStore.map((obj) => obj.itemId).reduce(aryMax, 1)
+	let lowerlimit
+	$: lowerlimit = $midselStore.map((obj) => obj.itemId).reduce(aryMin, 1)
 
 	let addNewMidChoice = 999999
 	let addNewMajaChoice = 999999
@@ -206,11 +212,11 @@
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="lowerlimit">範囲(from)</label>
-			<input type="number" name="lowerlimit" />
+			<input type="number" name="lowerlimit" min={lowerlimit} max={upperlimit} />
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="upperlimit">範囲(to)</label>
-			<input type="number" name="upperlimit" />
+			<input type="number" name="upperlimit" min={lowerlimit} max={upperlimit} />
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
 	</form>
