@@ -21,7 +21,6 @@ export const load = (async () => {
 export const actions = {
 	deletebycsv: async ({ request }) => {
 		const data = await request.formData()
-		console.log("data: ", data)
 		const lowerlimit = data.get('lowerlimit') ?? ''
 		const upperlimit = data.get('upperlimit') ?? ''
 		const csv = data.get('sourcefile')

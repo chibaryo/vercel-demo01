@@ -59,5 +59,27 @@ export const actions = {
 				})
 			}
 		}
-	}
+	},
+	deletebycsv:  async ({ request }) => {
+		const data = await request.formData()
+
+		const lowerlimit = data.get('lowerlimit') ?? ''
+		const upperlimit = data.get('upperlimit') ?? ''
+		const csv = data.get('sourcefile')
+
+		try {
+			const resp = await SelectionModel.deleteMany({ itemId: { $gte: lowerlimit, $lte: upperlimit } })
+			console.log("resp", resp)
+
+			return { 
+				range: JSON.stringify({ lowerlimit: lowerlimit, upperlimit: upperlimit })
+			}
+		} catch (err) {
+			if (err.code === 11000 && err.keyPattern.itemId === 1) {
+				return fail(400, {
+						itemId, dupval: true
+				})
+			}
+		}
+	},
 } // satisfies Actions

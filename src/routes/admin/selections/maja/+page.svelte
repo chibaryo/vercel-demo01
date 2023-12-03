@@ -12,6 +12,7 @@
 	export let form
 
 	//
+	import DeleteManyModal from '../mid/DeleteManyModal.svelte'
 	import DeleteMajaselModal from './DeleteMajaselModal.svelte'
 	import EditMajaselModal from '../mid/AddNewMajaselModal.svelte'
 
@@ -19,6 +20,7 @@
 	let addNewMajaselFlag = false
 	let deleteMajaselModalOpen = false
 	let editMajaselModalOpen = false
+	let deleteManyModalOpen = false
 
 	//
 	let currentMajaselRowData
@@ -31,8 +33,12 @@
 
 	}
 	const handleMultiRowDelete = async () => {
-
+		deleteManyModalOpen = true
 	}
+	const closeDeleteMany = () => {
+		deleteManyModalOpen = false
+	}
+
 	const openEditModal = async (row) => {
 		currentMajaselRowData = row
 //		parent_selected = 
@@ -106,6 +112,41 @@
 	<button on:click={() => deleteRow(currentMajaselRowData._id)}>削除</button>
 	<button on:click={() => deleteMajaselModalOpen = false} style="background-color: rgb(254 226 226);">キャンセル</button>
 </DeleteMajaselModal>
+
+<!-- delete many -->
+<DeleteManyModal visible={deleteManyModalOpen}>
+	<form method="post" action="?/deletebycsv" enctype="multipart/form-data" use:enhance={({ formData }) => {
+		return async ({ result }) => {
+			invalidateAll()
+			await applyAction(result)
+			if (result.data) {
+				// Do something
+				$majaChoicesStore = $majaChoicesStore.filter((row) => {
+					return (
+						row.itemId < Number(JSON.parse(result.data.range)["lowerlimit"]) ||
+						row.itemId > Number(JSON.parse(result.data.range)["upperlimit"])
+					)})
+				console.log("$majaChoicesStore", $majaChoicesStore)
+				deleteManyModalOpen = false
+			}
+		}
+	}}>
+		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
+			<label for="sourcefile">File</label>
+			<input type="file" name="sourcefile" />
+		</div>
+		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
+			<label for="lowerlimit">範囲(from)</label>
+			<input type="number" name="lowerlimit" />
+		</div>
+		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
+			<label for="upperlimit">範囲(to)</label>
+			<input type="number" name="upperlimit" />
+		</div>
+		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
+	</form>
+	<button on:click={() => closeDeleteMany()} style="background-color: rgb(254 226 226);">Cancel</button>
+</DeleteManyModal>
 
 <!-- Edit / Add Midsel Modal -->
 {#if addNewMajaselFlag === false} <!-- Edit existing post -->
