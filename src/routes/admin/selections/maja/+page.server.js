@@ -82,4 +82,31 @@ export const actions = {
 			}
 		}
 	},
+	addbycsv: async ({ request }) => {
+		const data = await request.formData()
+		const csv = data.get('sourcefile')
+
+		console.log("csv.type: ", csv.type)
+		let csvArray = new Uint8Array(await csv.arrayBuffer())
+		const str = new TextDecoder().decode(csvArray)
+		const lines = str.split('\r\n')
+
+		const obj = await Promise.all(lines.filter(i => {
+			const csv_row = i.split(',')
+			if (Number(csv_row[0]) >= 1)
+				return true
+		}).map(async (item) => ({
+				itemId: Number(item.split(',')[0]),
+				text: item.split(',')[1]
+			})
+		))
+		console.log("obj: ", obj)
+
+		await connectDB()
+
+		let addmany_resp = await SelectionModel.insertMany( obj )
+		console.log("addmany_resp", addmany_resp)
+
+		return { added: JSON.stringify(addmany_resp) }
+	},
 } // satisfies Actions
