@@ -40,7 +40,7 @@
 	//	import DeleteMidselModal from './DeleteMidselModal.svelte'
 
 	let insertManyFlag = false
-	let addMinselModalOpen = false
+	let addMinselModalFlag = false
 	let editMinselModalOpen = false
 	let deleteMinselModalOpen = false
 	let addNewMidselModalOpen = false
@@ -75,6 +75,7 @@
 
 	const closeEditMinselModal = () => {
 		editMinselModalOpen = false
+		addMinselModalFlag = false
 		form = null
 	}
 
@@ -123,7 +124,7 @@
 
 	const handleAddPost = async () => {
 		currentmidItemId = undefined
-		addMinselModalOpen = true
+		addMinselModalFlag = true
 		editMinselModalOpen = true
 	}
 
@@ -275,7 +276,7 @@
 </AddNewMidselModal>
 
 <!-- Edit Minsel Modal addMinselModalOpen -->
-{#if addMinselModalOpen === false}
+{#if addMinselModalFlag === false}
 <EditMinselModal visible={editMinselModalOpen}>
 	<form method="post" action="?/editminselpost" use:enhance={({ formData, cancel }) => {
 		console.log("formData: ", formData)
@@ -319,7 +320,7 @@
 	<button on:click={closeEditMinselModal} style="background-color: rgb(254 226 226);">Cancel</button>
 </EditMinselModal>
 
-{:else if addMinselModalOpen === true}
+{:else if addMinselModalFlag === true}
 <EditMinselModal visible={editMinselModalOpen}>
 	<form method="post" action="?/addminselpost" use:enhance={({ formData, cancel }) => {
 		console.log("formData: ", formData)
@@ -329,7 +330,7 @@
 			if (result.data.updated) {
 				// Close modal
 				editMinselModalOpen = false
-				addMinselModalOpen = false
+				addMinselModalFlag = false
 
 				// Renew store
 				const { _id, itemId, text, parentId, createdAt, updatedAt } = JSON.parse(result.data.updated)
