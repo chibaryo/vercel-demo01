@@ -33,6 +33,7 @@
 
 	//
 	let currentMajaselRowData
+	let childCounts
 
 	const handleAddPost = async () => {
 		addNewMajaselFlag = true
@@ -69,6 +70,19 @@
 	}
 	const deleteRow = async (_id) => {
 		console.log("_id: ", _id)
+		{
+			// Check if this post has any child(ren)?
+			const resp = await fetch(`/api/getchildren/maja/${_id}`, {
+				method: 'GET',
+			})
+			const childdata = await resp.json()
+			childCounts = childdata.children.length
+			console.log("child_rength: ", childCounts)
+			if (childCounts > 0) {
+				console.log("have children.")
+				return
+			}
+		}
 
 		const resp = await fetch(`/api/selections/maja/${_id}`, {
 			method: 'DELETE',
@@ -86,6 +100,11 @@
 		console.log("$majaChoicesStore", $majaChoicesStore)
 		deleteMajaselModalOpen = false
 
+	}
+
+	const closeDeleteModal = async () => {
+		deleteMajaselModalOpen = false
+		childCounts = undefined
 	}
 </script>
 
@@ -118,11 +137,14 @@
 
 <!-- Delete Midsel modal -->
 <DeleteMajaselModal visible={deleteMajaselModalOpen}>
+	{#if childCounts > 0}
+		<span style="color: red;">子要素が空ではありません</span>
+	{/if}
 	<h2>削除しますか？</h2>
 	<div class="background-color: rgb(231 229 228); display: flex; flex-flow: column;">{currentMajaselRowData.itemId}</div>
 	<p>{currentMajaselRowData.text}</p>
 	<button on:click={() => deleteRow(currentMajaselRowData._id)}>削除</button>
-	<button on:click={() => deleteMajaselModalOpen = false} style="background-color: rgb(254 226 226);">キャンセル</button>
+	<button on:click={() => closeDeleteModal()} style="background-color: rgb(254 226 226);">キャンセル</button>
 </DeleteMajaselModal>
 
 <!-- delete many -->
