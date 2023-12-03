@@ -182,11 +182,22 @@
 
 <!-- delete many -->
 <DeleteManyModal visible={deleteManyModalOpen}>
-	<form method="post" action="?/deletebycsv" enctype="multipart/form-data" use:enhance={() => {
+	<form method="post" action="?/deletebycsv" enctype="multipart/form-data" use:enhance={({ formData }) => {
 		return async ({ result }) => {
 			invalidateAll()
 			await applyAction(result)
-			// Do something
+			if (result.data) {
+				// Do something
+//				console.log("JSON.parse(result.data.resp)", JSON.parse(result.data.resp)) // deletedCount: 4
+				console.log("JSON.parse(result.data.range)", JSON.parse(result.data.range)["lowerlimit"])
+				$midselStore = $midselStore.filter((row) => {
+					return (
+						row.itemId < Number(JSON.parse(result.data.range)["lowerlimit"]) ||
+						row.itemId > Number(JSON.parse(result.data.range)["upperlimit"])
+					)})
+				console.log("$midselStore", $midselStore)
+				deleteManyModalOpen = false
+			}
 		}
 	}}>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
