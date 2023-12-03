@@ -333,7 +333,7 @@
 				addMinselModalFlag = false
 
 				// Renew store
-				const { _id, itemId, text, parentId, createdAt, updatedAt } = JSON.parse(result.data.updated)
+				const { _id, itemId, text, parentId, createdAt, updatedAt } = JSON.parse(result.data.added)
 				$minselStore = [...$minselStore, { _id: _id, itemId: itemId, text: text, parentId: parentId, createdAt: createdAt, updatedAt: updatedAt }]
 				$minselStore = $minselStore
 				console.log("now $minselStore", $minselStore)

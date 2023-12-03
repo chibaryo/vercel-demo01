@@ -286,10 +286,11 @@
 			invalidateAll()
 			await applyAction(result)
 			// Renew store
-			const { _id, itemId, text, parentId } = JSON.parse(result.data.updated)
+			const { _id, itemId, text, parentId } = JSON.parse(result.data.added)
 			console.log("_id, itemId, text, parentId ", _id + itemId + text + parentId)
 			// Close modal
 			editMidselModalOpen = false
+			addNewMidselFlag = false
 			const xloc = $midselStore.findIndex((elem) => elem._id === _id)
 			$midselStore.splice(xloc, 1, { _id: _id, itemId: itemId, text: text, parentId: parentId })
 			$midselStore = $midselStore
