@@ -3,7 +3,7 @@ import * as postVectController from '$lib/mongodb/controller/postVectController'
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-	default: async ({ request }) => {
+	registervect: async ({ request }) => {
 		const data = await request.formData()
 		console.log("data", data)
 
@@ -32,4 +32,17 @@ export const actions = {
 		console.log("respdata: ", resp)
 		return { newpost: JSON.stringify(resp) }
 	},
+	addcsvvect: async ({ request }) => {
+		const data = await request.formData()
+		const csv = data.get('sourcefile')
+
+		console.log("csv.type: ", csv.type)
+		let csvArray = new Uint8Array(await csv.arrayBuffer())
+		const str = new TextDecoder().decode(csvArray)
+		const lines = str.split('\r\n')
+
+		console.log("lines", lines)
+
+		return
+	}
 } // satisfies Actions

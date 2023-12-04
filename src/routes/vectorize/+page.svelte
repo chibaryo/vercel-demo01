@@ -1,19 +1,39 @@
 <script>
+  import { invalidateAll } from '$app/navigation'
+  import { enhance, applyAction } from '$app/forms'
+
+	let text1 = ''
+
+	/** @type {import('./$types').PageData} */
+	export let data
+
+	/** @type {import('./$types').ActionData} */
+	export let form
+
+	/** @type {import('./$types').Snapshot<string>} */
+	export const snapshot = {
+		capture: () => text1,
+		restore: (value) => text1 = value
+	}
 </script>
 
 <section>
-	<form method="POST" enctype="multipart/form-data">
+	<form method="POST" action="?/registervect" enctype="multipart/form-data">
 		<div style="width: 90vw; display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; text-align: center; justify-content: center; margin: auto;">
 			<div style="grid-column: 1 / span 12; background-color: #66cc99; display: flex; flex-flow: column;">
 				<label for="text1">テキスト1</label>
-				<textarea name="text1" class="textbox" cols="20" rows="5" />
+				<textarea name="text1" class="textbox" cols="20" rows="5" bind:value={text1} />
 			</div>
 			<div style="grid-column: 1 / span 12; background-color: #faaa99; display: flex; flex-flow: column; border-radius: 15%;">
 				<button type="submit" class="btn-submit">ベクタ登録</button>
 			</div>
-	</div>
-</form>
+		</div>
+	</form>
 
+	<form method="POST" action="?/addcsvvect" enctype="multipart/form-data" use:enhance>
+		<input type="file" name="sourcefile" accept=".csv" />
+		<button type="submit" class="btn-submit">Submit</button>
+	</form>
 </section>
 
 <style>

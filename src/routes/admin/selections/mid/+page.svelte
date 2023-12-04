@@ -231,7 +231,7 @@
 	}}>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="sourcefile">File</label>
-			<input type="file" name="sourcefile" />
+			<input type="file" name="sourcefile" accept=".csv" />
 		</div>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="lowerlimit">範囲(from)</label>
@@ -270,7 +270,7 @@
 	}}>
 		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
 			<label for="sourcefile">File</label>
-			<input type="file" name="sourcefile" />
+			<input type="file" name="sourcefile" accept=".csv" />
 		</div>
 		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">Submit</button>
 	</form>
