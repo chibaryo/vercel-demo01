@@ -31,7 +31,7 @@
 	</form>
 
 	<form method="POST" action="?/addcsvvect" enctype="multipart/form-data" use:enhance>
-		<input type="file" name="sourcefile" accept=".csv" />
+		<input type="file" name="sourcefile" accept=".csv, .xlsx" />
 		<button type="submit" class="btn-submit">Submit</button>
 	</form>
 </section>
