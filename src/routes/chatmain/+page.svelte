@@ -41,8 +41,8 @@
 <section style="flex: 1; overflow-y: scroll;">
 	<!-- 大分類 -->
 	<div class="chat-message-text original-box-shadow">
-		<div style="width: 100vw; font-size: 1rem; line-height: 1rem;"><span style="">大分類選択（任意）：</span></div>
-		<select bind:value={$majaSelectedStore} on:change={() => handlemQChange()} style="width: 100vw;">
+		<div style="width: 100%; font-size: 1rem; line-height: 1rem;"><span style="">大分類選択（任意）：</span></div>
+		<select bind:value={$majaSelectedStore} on:change={() => handlemQChange()} style="width: 100%;">
 			<option selected disabled value="選択...">選択...</option>
 			{#each $majaArray as mq}
 			<optgroup label="">
@@ -57,8 +57,8 @@
 	<!-- 中分類 -->
 	{#if $majaSelectedStore && $majaSelectedStore.itemId >= 1}
 	<div class="chat-message-text original-box-shadow">
-		<div style="width: 100vw; font-size: 1rem; line-height: 1rem;"><span>中分類選択（任意）：</span></div>
-		<select bind:value={$midSelectedStore} on:change={() => handlemidQChange()} style="width: 100vw;">
+		<div style="width: 100%; font-size: 1rem; line-height: 1rem;"><span>中分類選択（任意）：</span></div>
+		<select bind:value={$midSelectedStore} on:change={() => handlemidQChange()} style="width: 100%;">
 			<option selected disabled value="選択...">選択...</option>
 			{#each $midArray as midrow}
 			{#if midrow.parentId._id === $majaSelectedStore._id}
@@ -76,12 +76,12 @@
 <!-- 小分類 -->
 	{#if $midSelectedStore && $midSelectedStore.itemId >= 1}
 	<div class="chat-message-text original-box-shadow">
-		<div style="width: 100vw; font-size: 1rem; line-height: 1rem;"><span>小分類選択（任意）：</span></div>
-		<select bind:value={$minSelectedStore} on:change={() => handleminQChange()} style="width: 100vw;">
+		<div style="width: 100%; font-size: 1rem; line-height: 1rem;"><span>小分類選択（任意）：</span></div>
+		<select bind:value={$minSelectedStore} on:change={() => handleminQChange()} style="width: 100%;">
 			<option selected disabled value="選択...">選択...</option>
 			{#each $minArray as minq}
 			{#if minq.parentId._id === $midSelectedStore._id}
-			<optgroup label="" style="line-height: 1rem;">
+			<optgroup label="" style="line-height: 0.75rem;">
 				<option value={minq}>
 					{minq.text}
 				</option>
@@ -190,6 +190,7 @@
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap');
 
 .chat-message-text {
 	font-family: 'M PLUS 1p', sans-serif;
@@ -206,6 +207,12 @@
 	background-color: #fff0f5;
 	border-radius: 9px 9px;
 	box-shadow: 0px 10px 10px -6px rgba(0, 0, 0, 0.3);
+}
+
+select {
+	padding: 0.75rem;
+	font-family: 'Sawarabi Mincho', serif;
+	font-size: 1rem;
 }
 </style>
 
