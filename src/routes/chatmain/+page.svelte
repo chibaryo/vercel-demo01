@@ -4,7 +4,7 @@
 	import { invalidateAll } from '$app/navigation'
 
 	// Sub components
-	import { InputBox } from './InputBox.svelte'
+	import InputBox from './InputBox.svelte'
 
 	// icons
 	import gptIcon from '$lib/assets/icons/icons8-チャットチャット-144.png'

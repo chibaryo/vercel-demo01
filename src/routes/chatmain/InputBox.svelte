@@ -30,7 +30,7 @@
 			}
 		}
 	}}>
-	<input type="text" bind:value={message} name="yourstr" style="width: 100%; box-shadow: 0 0 5px 0 rgba(255,153,0,1); border: 2px solid #fff !important; outline: 0; flex: 1;" />
+	<input type="text" bind:value={message} name="yourstr" class="send-input" />
 	<div style="">
 		<input type="hidden" name="majsel" value={$majaSelectedStore?.text || ''} />
 		<input type="hidden" name="midsel" value={$midSelectedStore?.text || ''} />
@@ -41,6 +41,13 @@
 </section>
 
 <style>
+  .send-input {
+    width: 100%;
+    box-shadow: 0 0 5px 0 rgba(255,153,0,1);
+    border: 2px solid #fff !important;
+    outline: 0;
+    flex: 1;
+  }
   .send-form {
     height: 2.25rem;
     margin-top: 0rem;
