@@ -18,6 +18,7 @@
 </script>
 
 <section>
+	<h2>フォームから登録</h2>
 	<form method="POST" action="?/registervect" enctype="multipart/form-data">
 		<div style="width: 90vw; display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; text-align: center; justify-content: center; margin: auto;">
 			<div style="grid-column: 1 / span 12; background-color: #66cc99; display: flex; flex-flow: column;">
@@ -30,9 +31,14 @@
 		</div>
 	</form>
 
+	<h2>Excelファイルから登録</h2>
 	<form method="POST" action="?/addcsvvect" enctype="multipart/form-data" use:enhance>
-		<input type="file" name="sourcefile" accept=".csv, .xlsx" />
-		<button type="submit" class="btn-submit">Submit</button>
+		<div style="width: 90vw; display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; text-align: center; justify-content: center; margin: auto;">
+			<label for="sourcefile" style="grid-column: 1 / span 12;">Excel登録</label>
+			<span style="white-space: nowrap;">(A列のテキストがベクタ登録されます)</span>
+			<input type="file" name="sourcefile" accept=".xlsx" style="grid-column: 1 / span 12;" />
+			<button type="submit" class="btn-submit" style="grid-column: 1 / span 12;">アップロード</button>
+		</div>
 	</form>
 </section>
 
