@@ -13,10 +13,22 @@
 <section>
 	<h2 style="width: 100vw; display: inline-block; text-align: center; background-color: #fecca2;">ベクタDB管理</h2>
 
-	{#each $vectStore as row}
-	<li>{row.text1}</li>
-	<li>{row.vect_t1}</li>
-	{/each}
+	<table>
+		<thead>
+			<tr>
+				<th>text1</th>
+				<th>vect_t1</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each $vectStore as row}
+			<tr>
+				<td>{row.text1}</td>
+				<td>{row.vect_t1}</td>
+			</tr>
+			{/each}
+		</tbody>
+	</table>
 </section>
 
 
@@ -38,6 +50,10 @@
 		color: #fff;
 	}
 
+	table {
+		table-layout: fixed;
+		width: 90vw;
+	}
 	table, tr, th, td {
 		border: solid 1px;
 	}
@@ -47,5 +63,9 @@
 	tbody > tr > td:nth-child(1) {
 		text-align: center;
 	}
-
+	td {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 </style>
