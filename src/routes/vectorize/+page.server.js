@@ -10,31 +10,12 @@ import { promises as fs } from 'fs'
 export const actions = {
 	registervect: async ({ request }) => {
 		const data = await request.formData()
-		console.log("data", data)
 
 		const text1 = data.get('text1')?.toString() ?? ''
-//		const text2 = data.get('text2')?.toString() ?? ''
 
 		const vect_t1 = await get_vectorized_arr(text1)
-//		const vect_t2 = await get_vectorized_arr(text2)
 		const resp = await postVectController.createVect({ text1: text1, vect_t1: vect_t1 })
-		//		const emailaddr = data.get('emailaddr')?.toString() ?? ''
-/*		const resp = await fetch('http://localhost:8055/api/vectregister', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				text1: text1,
-				vect_t1: vect_t1,
-//				text2: text2,
-//				vect_t2: vect_t2,
-			})
-		})
-*/
 
-		//const respdata = await resp.json()
-		console.log("respdata: ", resp)
 		return { newpost: JSON.stringify(resp) }
 	},
 	addcsvvect: async ({ request }) => {
@@ -52,7 +33,7 @@ export const actions = {
 		try {
 			await connectDB()
 			const insmany_resp = await VectModel.insertMany(tmp_arr)
-			console.log("insmany_resp", insmany_resp)
+
 			return { added: JSON.stringify(insmany_resp) }
 		} catch (err) {
 			console.error (err)
