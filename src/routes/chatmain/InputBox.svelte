@@ -42,8 +42,8 @@
 <style>
   .send-input {
     width: 100%;
-    box-shadow: 0 0 5px 0 rgba(255,153,0,1);
-    border: 2px solid #fff !important;
+/*    box-shadow: 0 0 5px 0 rgba(255,153,0,1); */
+    border: 2px solid #999999 !important;
     outline: 0;
     flex: 1;
   }
