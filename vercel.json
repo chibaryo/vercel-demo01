@@ -1,7 +1,7 @@
 {
   "rewrites": [{ "source": "/(.*)", "destination": "/" }],
   "functions": {
-    "/src/routes/chatmain/**/*": {
+    "src/routes/chatmain/**/*": {
       "maxDuration": 60
     }
   }
