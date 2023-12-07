@@ -22,6 +22,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@sveltejs/adapter-vercel": "^3.1.0",
 		"mongoose": "^8.0.2",
 		"node-xlsx": "^0.23.0",
 		"svelte-loading-spinners": "^0.3.4",
