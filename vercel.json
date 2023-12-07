@@ -1,7 +1,7 @@
 {
   "rewrites": [{ "source": "/(.*)", "destination": "/" }],
   "functions": {
-    "src/routes/chatmain/**/*": {
+    "api/getgptcompletion/*": {
       "maxDuration": 60
     }
   }

@@ -17,6 +17,7 @@
 
 	/** @type {import('./$types').PageData} */
 	export let data
+
 	majaArray.set(JSON.parse(data.majaselections))
 	midArray.set(JSON.parse(data.midselections))
 	minArray.set(JSON.parse(data.minselections))

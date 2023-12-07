@@ -19,11 +19,21 @@
 		return async ({ result }) => {
 			invalidateAll()
 			await applyAction(result)
-			$loading = false
 			// Renew store
 			if ('data' in result) {
 				if (result.data !== undefined) {
-					$gptchatStrStore = result.data.newpost
+					const resp = await fetch('/api/getgptcompletion', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify ({
+							prompt: result.data.prompt
+						})
+					})
+					const data = await resp.json()
+					$gptchatStrStore = data.gotanswer
+					$loading = false
 //					message = ''
 				}
 			}
