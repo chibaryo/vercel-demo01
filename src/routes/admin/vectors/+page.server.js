@@ -60,7 +60,6 @@ export const actions = {
 		try {
 			await connectDB()
 			const insmany_resp = await VectModel.insertMany(tmp_arr)
-			console.log("insmany_resp: ", insmany_resp)
 
 			return { added: JSON.stringify(insmany_resp) }
 		} catch (err) {

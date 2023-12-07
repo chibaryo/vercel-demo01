@@ -94,7 +94,7 @@
 	<table>
 		<thead>
 			<tr>
-				<th>itemId</th>
+				<th>Id</th>
 				<th>text1</th>
 				<th>vect_t1</th>
 				<th colspan="1">操作</th>
@@ -124,7 +124,8 @@
 					return {
 						_id: obj._id,
 						itemId: obj.itemId,
-						text: obj.text,
+						text1: obj.text1,
+						vect_t1: obj.vect_t1
 					}
 				})
 				// Renew store
@@ -204,11 +205,17 @@
 		text-align: center;
 		word-break: break-word;
 	}
+	thead > tr > th:nth-child(1) {
+		width: 6vw;
+	}
 	thead > tr > th:nth-child(2) {
 		width: 20vw;
 	}
 	thead > tr > th:nth-child(3) {
 		width: 16vw;
+	}
+	thead > tr > th:nth-child(4) {
+		width: 5vw;
 	}
 	td {
 		overflow: hidden;
