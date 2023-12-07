@@ -17,6 +17,29 @@ export const load = (async () => {
 }) // satisfies PageServerLoad
 
 export const actions = {
+	addvect: async ({ request }) => {
+		const data = await request.formData()
+		const text1 = data.get('text1') ?? ''
+		const vect_t1 = await get_vectorized_arr(text1)
+
+		// Consult Vect DB for their length
+		const vectCount = await VectModel.countDocuments({}).exec()
+
+		try {
+			await connectDB()
+			const resp = await VectModel.create({
+				itemId: vectCount + 1,
+				text1: text1,
+				vect_t1: vect_t1
+			})
+
+			return { 
+				added: JSON.stringify({ resp })
+			}
+		} catch (err) {
+			console.error (err)
+		}
+	},
 	deletebycsv:  async ({ request }) => {
 		const data = await request.formData()
 
@@ -25,6 +48,7 @@ export const actions = {
 		const csv = data.get('sourcefile')
 
 		try {
+			await connectDB()
 			const resp = await VectModel.deleteMany({ itemId: { $gte: lowerlimit, $lte: upperlimit } })
 			console.log("resp", resp)
 

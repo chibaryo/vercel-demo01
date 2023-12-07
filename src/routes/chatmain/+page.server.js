@@ -56,7 +56,8 @@ export const actions = {
 		})
 
 		// Generate prompt
-		const prompt = `以下の情報をコンテキスト情報として回答してください。\n#コンテキスト情報： ${joined_hints}\n#質問： ${origStr}\n#回答：`
+//		const prompt = `以下の情報をコンテキスト情報として回答してください。\n#コンテキスト情報： ${joined_hints}\n#質問： ${origStr}\n#回答：`
+		const prompt = `以下の情報をコンテキスト情報として、詳細な情報やコツを箇条書きで300文字以内で丁寧に教えてください\n#コンテキスト情報： ${joined_hints}\n#質問： ${origStr}\n#回答：`
 		const response = await gpt_createCompletion(prompt, max_tokens)
 
 		return {

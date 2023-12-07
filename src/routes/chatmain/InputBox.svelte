@@ -24,7 +24,7 @@
 			if ('data' in result) {
 				if (result.data !== undefined) {
 					$gptchatStrStore = result.data.newpost
-					message = ''
+//					message = ''
 				}
 			}
 		}

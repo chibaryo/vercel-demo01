@@ -19,6 +19,7 @@
 	import DeleteselModal from './DeleteselModal.svelte'
 	import DeleteManyModal from './DeleteselModal.svelte'
 	import InsertManyModal from './DeleteselModal.svelte'
+	import AddNewVectModal from './DeleteselModal.svelte'
 
 	import arrowLeftIcon from '$lib/assets/icons/arrow-left.svg'
 	import pencilIcon from '$lib/assets/icons/pencil-alt.svg'
@@ -29,6 +30,7 @@
 	let deleteselModalOpen = false
 	let deleteManyModalOpen = false
 	let insertManyFlag = false
+	let addVectModalFlag = false
 
 	// fn
 	const openEditModal = async (row) => {
@@ -59,7 +61,7 @@
 	}
 
 	const handleAddPost = async () => {
-
+		addVectModalFlag = true
 	}
 
 	const handleInsertXlsx = async () => {
@@ -74,6 +76,9 @@
 	}
 	const closeDeleteMany = () => {
 		deleteManyModalOpen = false
+	}
+	const closeAddVectModal = () => {
+		addVectModalFlag = false
 	}
 </script>
 
@@ -103,6 +108,29 @@
 		</tbody>
 	</table>
 </section>
+
+<!-- Add New Major selection modal -->
+<AddNewVectModal visible={addVectModalFlag}>
+	<h2>ベクタ登録する</h2>
+	<form method="post" action="?/addvect" use:enhance={() => {
+		return async ({ result }) => {
+			invalidateAll()
+			await applyAction(result)
+			// Renew store
+			const { _id, itemId, text1, vect_t1 } = JSON.parse(result.data.added)["resp"]
+			// Close modal
+			addVectModalFlag = false
+			$vectStore = [...$vectStore, { _id: _id, itemId: itemId, text1: text1, vect_t1: vect_t1 }]
+		}
+	}}>
+		<div style="background-color: rgb(231 229 228); display: flex; flex-flow: column;">
+			<label for="text1">登録するテキスト</label>
+			<input type="text" name="text1" />
+		</div>
+		<button type="submit" style="border: 1px; background-color: rgb(255 237 213);">登録</button>
+		<button on:click={closeAddVectModal} style="background-color: rgb(254 226 226);">キャンセル</button>
+	</form>
+</AddNewVectModal>
 
 <!-- insert many -->
 <InsertManyModal visible={insertManyFlag}>
