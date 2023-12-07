@@ -153,7 +153,7 @@
 </script>
 
 <section>
-	<h2 style="width: 100vw; display: inline-block; text-align: center; background-color: #fecca2;">小分類選択肢管理</h2>
+<!--	<h2 style="width: 100vw; display: inline-block; text-align: center; background-color: #fecca2;">小分類選択肢管理</h2> -->
 
 	<button style="border: 1px solid;" on:click={() => handleAddPost()}>新規登録</button>
 	<button style="border: 1px solid;" on:click={() => handleInsertCsv()}>CSV一括登録</button>

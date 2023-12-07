@@ -44,7 +44,8 @@ export const actions = {
 		const majsel = data.get('majsel')?.toString() || ''
 		const midsel = data.get('midsel')?.toString() || ''
 		const minsel = data.get('minsel')?.toString() || ''
-		const origStr = majsel + midsel + minsel + yourstr
+		const origStr = majsel + " " + midsel + " " + minsel + " " + yourstr
+		console.log("origStr: ", origStr)
 		const vectYourStr = await get_vectorized_arr(origStr)
 
 		const items_arr = await compareWithVect(vectYourStr)

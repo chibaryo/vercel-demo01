@@ -45,7 +45,6 @@ export const cosine_similarity = async (vect_a, vect_b) => {
 	const dot_product = dot(vect_a, vect_b)
 	const norm_a = norm(vect_a)
 	const norm_b = norm(vect_b)
-	console.log("norm_a: ", norm_a)
 
 	const similarity = dot_product / (norm_a * norm_b)
 

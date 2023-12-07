@@ -11,3 +11,4 @@ export const gptchatStrStore = writable('')
 
 export const vectStore = writable([])
 export const isVisibleGptAnswerBox = writable(false)
+export const loading = writable(false)

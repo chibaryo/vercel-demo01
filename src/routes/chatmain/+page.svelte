@@ -11,10 +11,9 @@
 
 	//	import DarkSwitcher from './DarkSwitcher.svelte'
 	let message
-	let loading = false
 //	export let isVisibleGptAnswerBox
 
-	import { isVisibleGptAnswerBox, majaArray, midArray, minArray, majaSelectedStore, midSelectedStore, minSelectedStore, gptchatStrStore } from './store'
+	import { loading, isVisibleGptAnswerBox, majaArray, midArray, minArray, majaSelectedStore, midSelectedStore, minSelectedStore, gptchatStrStore } from './store'
 
 	/** @type {import('./$types').PageData} */
 	export let data
@@ -173,8 +172,9 @@
 			</div>
 			<div class="message original-box-shadow" style="grid-column: 2/ span 8; grid-row: 1/2; margin-left: 6px; display: flex; flex-direction: column;">
 				<span class="chat-message-text" style="display: inline-block; font-size: 1rem; line-height: 1rem; padding: 0.5rem;">
-					{#if loading}
+					{#if $loading}
 						<Clock size="32" color="#0080ff" unit="px" />
+						<span>お待ちください...</span>
 					{/if}
 					{$gptchatStrStore}
 				</span>

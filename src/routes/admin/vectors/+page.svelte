@@ -78,15 +78,6 @@
 </script>
 
 <section>
-	<div style="background-color: #fecca2; display: grid; grid-template-columns: repeat (12, 1fr); gap: 4px; height: 2.5rem;">
-		<div style="grid-column: 1 / span 1; align-self: center; ">
-			<img src={arrowLeftIcon} alt="goback" style="height: 1.5rem; padding: auto;" />
-		</div>
-		<span style="display: inline-block; grid-column: 5 / span 1; align-self: center; white-space: nowrap;">ベクタDB管理</span>
-		<div style="grid-column: 7 / span 6;">
-		</div>
-	</div>
-
 	<button style="border: 1px solid;" on:click={() => handleAddPost()}>新規登録</button>
 	<button style="border: 1px solid;" on:click={() => handleInsertXlsx()}>Excel一括登録</button>
 	<button style="border: 1px solid;" on:click={() => handleMultiRowDelete()}>範囲指定削除</button>

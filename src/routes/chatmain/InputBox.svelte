@@ -2,8 +2,7 @@
  	import { enhance, applyAction } from '$app/forms'
   import { invalidateAll } from '$app/navigation'
 
-  export let loading
-  import { gptchatStrStore, isVisibleGptAnswerBox, majaSelectedStore, midSelectedStore, minSelectedStore } from './store'
+  import { loading, gptchatStrStore, isVisibleGptAnswerBox, majaSelectedStore, midSelectedStore, minSelectedStore } from './store'
   export let message
 </script>
 
@@ -13,14 +12,14 @@
   class="send-form"
 	action="/chatmain"
 	use:enhance={() => {
-		loading = true
+		$loading = true
 		$isVisibleGptAnswerBox = true
 		$gptchatStrStore = ''
 
 		return async ({ result }) => {
 			invalidateAll()
 			await applyAction(result)
-			loading = false
+			$loading = false
 			// Renew store
 			if ('data' in result) {
 				if (result.data !== undefined) {
