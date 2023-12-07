@@ -8,7 +8,7 @@ import { error, fail } from '@sveltejs/kit'
 export const load = (async () => {
 	await connectDB()
 	const maja_resp = await SelectionModel.find({}).sort({ itemId: 1 }).lean()
-	const mid_resp = await ChildModel.find({}).populate('parentId').sort({ "parentId.text": 1 }).lean()
+	const mid_resp = await ChildModel.find({}).populate('parentId').sort({ itemId: 1 }).lean() // .sort({ "parentId.text": 1 })
 	const min_resp = await GrandChildModel.find({}).populate('parentId').sort({ "parentId.text": 1 }).lean()
 
   return {
