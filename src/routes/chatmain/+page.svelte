@@ -8,6 +8,7 @@
 
 	// icons
 	import gptIcon from '$lib/assets/icons/icons8-チャットチャット-144.png'
+	import chatOperatorIcon from '$lib/assets/icons/8m06nfdad32a2o2pgo3p8kboai.png'
 
 	//	import DarkSwitcher from './DarkSwitcher.svelte'
 	let message
@@ -167,8 +168,8 @@
 		<!-- GPT answer -->
 		{#if $isVisibleGptAnswerBox}
 		<div class="talk_wrapper" style="display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: 2fr; gap: 6px; margin-bottom: 0rem;">
-			<div class="prof_thumbnail" style="padding-top: 4px; padding-left: 2px; grid-column: 1/2; grid-row: 1/2; width: 3.25rem; display: flex; flex-flow: column; justify-content: start;">
-				<img src={gptIcon} alt="" style="padding: 0; margin: 0; display:inline-block; border-radius: 50%"/>
+			<div class="prof_thumbnail" style="padding-top: 4px; padding-left: 2px; grid-column: 1/2; grid-row: 1/2; width: 4rem; display: flex; flex-flow: column; justify-content: start;">
+				<img src={chatOperatorIcon} alt="" style="padding: 0; margin: 0; display:inline-block; border-radius: 25%"/>
 				<span class="prof_name" style="white-space: nowrap; text-align: center; font-size: 0.75rem; line-height: 0.85rem;">ChatGPT</span>
 			</div>
 			<div class="message original-box-shadow" style="grid-column: 2/ span 8; grid-row: 1/2; margin-left: 6px; display: flex; flex-direction: column;">
