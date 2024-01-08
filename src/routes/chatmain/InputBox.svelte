@@ -32,6 +32,7 @@
 						})
 					})
 					const data = await resp.json()
+					console.log("data.gotanswer", data.gotanswer)
 					$gptchatStrStore = data.gotanswer
 					$loading = false
 //					message = ''

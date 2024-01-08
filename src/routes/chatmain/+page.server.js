@@ -58,6 +58,7 @@ export const actions = {
 		// Generate prompt
 //		const prompt = `以下の情報をコンテキスト情報として回答してください。\n#コンテキスト情報： ${joined_hints}\n#質問： ${origStr}\n#回答：`
 		const prompt = `以下の情報をコンテキスト情報として、詳細な情報やコツを、行頭を・で始まる箇条書きで300文字以内で丁寧に教えてください。コンテキスト情報に合致する答えがない場合、積極的に「回答を持ち合わせていないため、和洋女子大学 進路支援センターにお問い合わせください。【受付時間】\n平日 9:00～17:00　土曜 9:00～14:00\n※日曜・祝日、大学の行事日、夏期および年末年始の休業期間は、事務取扱はありません。\n\n和洋女子大学 進路支援センター\n東館2階（教務課の向かい側）\n047-371-1125\nshinro@g.wayo.ac.jp」と回答してください。\n#コンテキスト情報： ${joined_hints}\n#質問： ${origStr}\n#回答：`
+		console.log("prompt: ", prompt)
 //		const response = await gpt_createCompletion(prompt, max_tokens)
 
 		return {

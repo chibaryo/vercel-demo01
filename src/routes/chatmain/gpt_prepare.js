@@ -67,7 +67,7 @@ export const gpt_createCompletion = async (prompt, max_tokens) => {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			model: 'text-davinci-003',
+			model: 'gpt-3.5-turbo-instruct', // deprecated: text-davinci-003
 			prompt: prompt,
 			max_tokens: max_tokens
 		})
