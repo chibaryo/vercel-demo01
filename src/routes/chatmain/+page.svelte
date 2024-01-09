@@ -11,10 +11,9 @@
 	import chatOperatorIcon from '$lib/assets/icons/8m06nfdad32a2o2pgo3p8kboai.png'
 
 	//	import DarkSwitcher from './DarkSwitcher.svelte'
-	let message
 //	export let isVisibleGptAnswerBox
 
-	import { loading, isVisibleGptAnswerBox, majaArray, midArray, minArray, majaSelectedStore, midSelectedStore, minSelectedStore, gptchatStrStore } from './store'
+	import { loading, isVisibleGptAnswerBox, majaArray, midArray, minArray, majaSelectedStore, midSelectedStore, minSelectedStore, gptchatStrStore, message, prevTalks } from './store'
 
 	/** @type {import('./$types').PageData} */
 	export let data
@@ -152,17 +151,26 @@
 -->
 
 		<!-- user Question -->
-		{#if message}
+		{#if $prevTalks}
+		{#each $prevTalks as prevEntry}
 		<div class="talk_wrapper" style="display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: 2fr; gap: 6px; margin-right: 0.75rem; margin-bottom: 0rem;">
 			<div class="message original-box-shadow" style="grid-column: 5 / span 8; grid-row: 1/2; margin-left: 6px;">
 				<p class="chat-message-text" style="font-size: 1rem; line-height: 1rem; padding: 0.5rem;">
-					{message}
+					{#if prevEntry.majaSelectedStore}
+						大分類:{prevEntry.majaSelectedStore.text}<br>
+					{/if}
+					{#if prevEntry.midSelectedStore}
+						中分類:{prevEntry.midSelectedStore.text}<br>
+					{/if}
+					小分類:{prevEntry.minSelectedStore.text || ''}<br>
+					{#if prevEntry.message}
+						{prevEntry.message}
+					{/if}
+					GPT回答: {prevEntry.gptchatStrStore}
 				</p>
 			</div>
-			<div style="grid-column: 5/ span 2; grid-row: 2/3;">
-				<button type="button">削除</button>
-			</div>
 		</div>
+		{/each}
 		{/if}
 
 		<!-- GPT answer -->

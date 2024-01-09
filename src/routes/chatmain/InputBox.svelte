@@ -2,8 +2,7 @@
  	import { enhance, applyAction } from '$app/forms'
   import { invalidateAll } from '$app/navigation'
 
-  import { loading, gptchatStrStore, isVisibleGptAnswerBox, majaSelectedStore, midSelectedStore, minSelectedStore } from './store'
-  export let message
+  import { loading, gptchatStrStore, isVisibleGptAnswerBox, majaSelectedStore, midSelectedStore, minSelectedStore, message, prevTalks } from './store'
 </script>
 
 <section>
@@ -35,12 +34,22 @@
 					console.log("data.gotanswer", data.gotanswer)
 					$gptchatStrStore = data.gotanswer
 					$loading = false
-//					message = ''
+					// Store to prevTalks
+					$prevTalks = [...$prevTalks, {
+						majaSelectedStore: $majaSelectedStore || '',
+						midSelectedStore: $midSelectedStore || '',
+						minSelectedStore: $minSelectedStore || '',
+						message: $message || '',
+						gptchatStrStore: $gptchatStrStore
+					}]
+					// check
+					console.log("$prevTalks: ", $prevTalks)
+//					$message = ''
 				}
 			}
 		}
 	}}>
-	<input type="text" bind:value={message} name="yourstr" class="send-input" />
+	<input type="text" bind:value={$message} name="yourstr" class="send-input" />
 	<div style="">
 		<input type="hidden" name="majsel" value={$majaSelectedStore?.text || ''} />
 		<input type="hidden" name="midsel" value={$midSelectedStore?.text || ''} />
