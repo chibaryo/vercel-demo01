@@ -1,5 +1,6 @@
 import * as getVectController from '$lib/mongodb/controller/getVectController'
 import { OPENAI_APIKEY } from '$env/static/private'
+import * as postChatHistoryController from '$lib/mongodb/controller/ChatHistory/postChatHistroyController'
 
 const dot = (vect_a, vect_b) => {
 	let product = 0
@@ -74,6 +75,13 @@ export const gpt_createCompletion = async (prompt, max_tokens) => {
 	})
 
 	const data = await response.json()
+	console.log('data["choices"][0]["text"]', data["choices"][0]['text'])
+
+	// Store to DB
+	await postChatHistoryController.createChatHistory({
+		q_text: prompt,
+		a_text: data["choices"][0]['text']
+	});
 
 	return data["choices"][0]['text']
 }

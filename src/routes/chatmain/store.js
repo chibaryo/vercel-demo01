@@ -7,7 +7,7 @@ export const minArray = writable([])
 export const majaSelectedStore = writable()
 export const midSelectedStore = writable()
 export const minSelectedStore = writable()
-export const gptchatStrStore = writable('')
+export const gptchatStrStore = writable([])
 
 export const vectStore = writable([])
 export const isVisibleGptAnswerBox = writable(false)

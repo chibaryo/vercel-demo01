@@ -32,7 +32,8 @@
 					})
 					const data = await resp.json()
 					console.log("data.gotanswer", data.gotanswer)
-					$gptchatStrStore = data.gotanswer
+					$gptchatStrStore = [...$gptchatStrStore, data.gotanswer]
+
 					$loading = false
 					// Store to prevTalks
 					$prevTalks = [...$prevTalks, {
@@ -42,8 +43,11 @@
 						message: $message || '',
 						gptchatStrStore: $gptchatStrStore
 					}]
+					// DBに格納する
+					
 					// check
 					console.log("$prevTalks: ", $prevTalks)
+					$isVisibleGptAnswerBox = false
 //					$message = ''
 				}
 			}
