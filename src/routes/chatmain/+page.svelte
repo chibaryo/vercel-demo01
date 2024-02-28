@@ -92,64 +92,6 @@
 	</div>
 	{/if}
 
-<!-- if message sender is target -->
-<!--		<div class="talk_wrapper" style="display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: 2fr; gap: 6px; margin-bottom: 0rem;">
-			<div class="prof_thumbnail" style="padding-top: 4px; padding-left: 2px; grid-column: 1/2; grid-row: 1/2; width: 3.25rem; display: flex; flex-flow: column; justify-content: start;">
-				<img src="/src/lib/assets/icons/icons8-チャットチャット-144.png" alt="" style="padding: 0; margin: 0; display:inline-block; border-radius: 50%"/>
-				<span class="prof_name" style="white-space: nowrap; text-align: center; font-size: 0.75rem; line-height: 0.85rem;">ChatGPT</span>
-			</div>
-			<div class="message original-box-shadow" style="grid-column: 2/ span 8; grid-row: 1/2; margin-left: 6px; display: flex; flex-direction: column;">
-				<span class="chat-message-text" style="display: inline-block; font-size: 1rem; line-height: 1rem; padding: 0.5rem;">大分類を選択してください</span>
-				<select bind:value={selected} on:change={() => handlemQChange()}>
-					{#each major_questions as mq}
-						<option value={mq}>
-							{mq.text}
-						</option>
-					{/each}
-					</select>
-				</div>
-			<div style="grid-column: 5/8; grid-row: 2/3;"> 
-				<span style="white-space: nowrap;">{getJpnTime(row.createdAt)}</span>
-			</div>
-		</div>
--->
-<!--		{#if selected && selected.id >= 1}
-		<div class="talk_wrapper" style="display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: 2fr; gap: 6px; margin-right: 0.75rem; margin-bottom: 0rem;">
-			<div class="message original-box-shadow" style="grid-column: 5 / span 8; grid-row: 1/2; margin-left: 6px;">
-				<p class="chat-message-text" style="font-size: 1rem; line-height: 1rem; padding: 0.5rem;">
-					{selected && selected.id >= 1 ? selected.text : '[waiting...]'}
-				</p>
-			</div>
-			<div style="grid-column: 5/ span 2; grid-row: 2/3;">
-				<button type="button">削除</button>
-			</div>
-		</div>
-		{/if}
--->
-		<!-- 中分類 -->
-<!--		{#if selected && selected.id >= 1}
-		<div class="talk_wrapper" style="display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: 2fr; gap: 6px; margin-bottom: 0rem;">
-			<div class="prof_thumbnail" style="padding-top: 4px; padding-left: 2px; grid-column: 1/2; grid-row: 1/2; width: 3.25rem; display: flex; flex-flow: column; justify-content: start;">
-				<img src="/src/lib/assets/icons/icons8-チャットチャット-144.png" alt="" style="padding: 0; margin: 0; display:inline-block; border-radius: 50%"/>
-				<span class="prof_name" style="white-space: nowrap; text-align: center; font-size: 0.75rem; line-height: 0.85rem;">ChatGPT</span>
-			</div>
-			<div class="message original-box-shadow" style="grid-column: 2/ span 8; grid-row: 1/2; margin-left: 6px; display: flex; flex-direction: column;">
-				<span class="chat-message-text" style="display: inline-block; font-size: 1rem; line-height: 1rem; padding: 0.5rem;">中分類を選択してください</span>
-				<select bind:value={min_selected} on:change={() => handleminQChange()}>
-					{#each minor_questions[selected.id - 1] as minq}
-						<option value={minq}>
-							{minq.text}
-						</option>
-					{/each}
-					</select>
-				</div>
-			<div style="grid-column: 5/8; grid-row: 2/3;">
-				<span style="white-space: nowrap;">{getJpnTime(row.createdAt)}</span>
-			</div>
-		</div>
-		{/if}
--->
-
 		<!-- user Question -->
 		{#if $prevTalks}
 		{#each $prevTalks as prevEntry}

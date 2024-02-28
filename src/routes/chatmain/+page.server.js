@@ -44,7 +44,20 @@ export const actions = {
 		const majsel = data.get('majsel')?.toString() || ''
 		const midsel = data.get('midsel')?.toString() || ''
 		const minsel = data.get('minsel')?.toString() || ''
-		const origStr = majsel + " " + midsel + " " + minsel + " " + yourstr
+		//
+		let origStr = ""
+		if (majsel != "" && midsel != "" && minsel != "") {
+			origStr = minsel + yourstr
+		}
+		if (majsel != "" && midsel != "" && minsel == "") {
+			origStr = midsel + yourstr
+		}
+		if (majsel != "" && midsel == "" && minsel == "") {
+			origStr = majsel + yourstr
+		}
+		if (majsel == "" && midsel == "" && minsel == "" && yourstr != "") {
+			origStr = yourstr
+		}
 		console.log("origStr: ", origStr)
 		const vectYourStr = await get_vectorized_arr(origStr)
 
