@@ -2,6 +2,7 @@
 	import { Clock } from 'svelte-loading-spinners'
 	import { enhance, applyAction } from '$app/forms'
 	import { invalidateAll } from '$app/navigation'
+	import Linkify from "linkify-react";
 
 	// Sub components
 	import InputBox from './InputBox.svelte'

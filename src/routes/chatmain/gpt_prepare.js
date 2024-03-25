@@ -16,19 +16,26 @@ const dot = (vect_a, vect_b) => {
 const get_embedding = async (your_prompt) => {
 	const url = 'https://api.openai.com/v1/embeddings'
 
-	const resp = await fetch(url, {
-		method: 'POST',
-		headers: {
-			'Authorization': `Bearer ${OPENAI_APIKEY}`,
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			input: your_prompt,
-			model: 'text-embedding-ada-002'
+	try {
+		const resp = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Authorization': `Bearer ${OPENAI_APIKEY}`,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				input: your_prompt,
+				model: 'text-embedding-ada-002'
+			})
 		})
-	})
 
-	return await resp.json()
+		const resdata = await resp.json()
+		console.log("resdata", resdata)
+		return await resdata
+	} catch (err) {
+		console.error (err)
+	}
+
 }
 
 const norm = (vect) => {
