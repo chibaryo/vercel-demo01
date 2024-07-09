@@ -10,6 +10,7 @@
 	// icons
 	import gptIcon from '$lib/assets/icons/icons8-チャットチャット-144.png'
 	import chatOperatorIcon from '$lib/assets/icons/8m06nfdad32a2o2pgo3p8kboai.png'
+	import cmBanner from '$lib/assets/pictures/cmbanner/キャリアサポートガイド_banner.jpg'
 
 	//	import DarkSwitcher from './DarkSwitcher.svelte'
 //	export let isVisibleGptAnswerBox
@@ -156,6 +157,11 @@
 </section>
 
 <InputBox />
+<div class="flex flex-row flex-nowrap items-center justify-center m-4">
+	<a href="https://portal.wayo.ac.jp/campusp/top.do" class="text-center w-full sm:w-1/2 lg:w-4/12">
+		<img src={cmBanner} alt="cmbanner" />
+	</a>
+</div>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@500&display=swap');

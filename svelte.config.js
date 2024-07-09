@@ -1,4 +1,5 @@
 import adapter from '@sveltejs/adapter-vercel';
+import { vitePreprocess } from '@sveltejs/kit/vite';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -9,7 +10,8 @@ const config = {
 		adapter: adapter({
 			maxDuration: 60,
 		})
-	}
+	},
+	preprocess: vitePreprocess()
 };
 
 export default config;
