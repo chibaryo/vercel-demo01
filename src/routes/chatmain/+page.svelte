@@ -11,6 +11,8 @@
 	import gptIcon from '$lib/assets/icons/icons8-チャットチャット-144.png'
 	import chatOperatorIcon from '$lib/assets/icons/8m06nfdad32a2o2pgo3p8kboai.png'
 	import cmBanner from '$lib/assets/pictures/cmbanner/キャリアサポートガイド_banner.jpg'
+	import bottomBanner1 from '$lib/assets/pictures/cmbanner/shinro.jpg'
+	import bottomBanner2 from '$lib/assets/pictures/cmbanner/activity.jpg'
 
 	//	import DarkSwitcher from './DarkSwitcher.svelte'
 //	export let isVisibleGptAnswerBox
@@ -40,7 +42,7 @@
 
 <!-- <DarkSwitcher /> -->
 
-<section style="flex: 1; overflow-y: scroll;">
+<section style="flex: 1; overflow-y: scroll;" class="my-2">
 	<!-- 大分類 -->
 	<div class="chat-message-text original-box-shadow">
 		<div style="width: 100%; font-size: 1rem; line-height: 1rem;"><span style="">大分類選択（任意）：</span></div>
@@ -157,10 +159,23 @@
 </section>
 
 <InputBox />
-<div class="flex flex-row flex-nowrap items-center justify-center m-4">
-	<a href="https://portal.wayo.ac.jp/campusp/top.do" class="text-center w-full sm:w-1/2 lg:w-4/12">
-		<img src={cmBanner} alt="cmbanner" />
+<div class="flex flex-row flex-nowrap items-center justify-center m-4 gap-2">
+	<a
+		href="https://st.uc.career-tasu.jp/careeredit/?id=e2cfe9c738a5f4b46acd8148d5aab665"
+		class=""
+		>
+		<img src={bottomBanner1} alt="bottomBanner1" />
 	</a>
+	<a
+		href="https://st.uc.career-tasu.jp/activitylist/?id=e2cfe9c738a5f4b46acd8148d5aab665"
+		class=""
+		>
+		<img src={bottomBanner2} alt="bottomBanner1" />
+	</a>
+
+<!--	<a href="https://portal.wayo.ac.jp/campusp/top.do" class="text-center w-full sm:w-1/2 lg:w-4/12">
+		<img src={cmBanner} alt="cmbanner" />
+	</a>-->
 </div>
 
 <style>

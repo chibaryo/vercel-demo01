@@ -1,7 +1,7 @@
 <section>
 	<div class="frame">
 		<div class="btn-112">
-			<a href="/chatmain">チャット画面</a>
+			<a href="/precaution">チャット画面</a>
 		</div>
 		<!--	<a href="/vectorize">ベクタ登録</a> -->
 		<div class="btn-113">
