@@ -48,7 +48,7 @@
 					// check
 					console.log("$prevTalks: ", $prevTalks)
 					$isVisibleGptAnswerBox = false
-//					$message = ''
+					$message = ''
 				}
 			}
 		}

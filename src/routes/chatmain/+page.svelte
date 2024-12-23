@@ -108,6 +108,7 @@
 		<div class="talk_wrapper" style="display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: 2fr; gap: 6px; margin-right: 0.75rem; margin-bottom: 0rem;">
 			<div class="message original-box-shadow" style="grid-column: 5 / span 8; grid-row: 1/2; margin-left: 6px;">
 				<p class="chat-message-text" style="font-size: 1rem; line-height: 1rem; padding: 0.5rem;">
+				<!--
 					{#if prevEntry.majaSelectedStore}
 						大分類:{prevEntry.majaSelectedStore.text}<br>
 					{/if}
@@ -117,6 +118,7 @@
 					{#if prevEntry.minSelectedStore != null || prevEntry.minSelectedStore != undefined}
 					小分類:{prevEntry.minSelectedStore.text || ''}<br>
 					{/if}
+				-->
 					{#if prevEntry.message}
 						{prevEntry.message}
 					{/if}
