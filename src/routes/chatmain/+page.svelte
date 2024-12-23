@@ -44,6 +44,7 @@
 
 <section style="flex: 1; overflow-y: scroll;" class="my-2">
 	<!-- 大分類 -->
+	<!--
 	<div class="chat-message-text original-box-shadow">
 		<div style="width: 100%; font-size: 1rem; line-height: 1rem;"><span style="">大分類選択（任意）：</span></div>
 		<select bind:value={$majaSelectedStore} on:change={() => handlemQChange()} style="width: 100%;">
@@ -57,8 +58,10 @@
 			{/each}
 		</select>
 	</div>
+	-->
 
 	<!-- 中分類 -->
+	<!--
 	{#if $majaSelectedStore && $majaSelectedStore.itemId >= 1}
 	<div class="chat-message-text original-box-shadow">
 		<div style="width: 100%; font-size: 1rem; line-height: 1rem;"><span>中分類選択（任意）：</span></div>
@@ -76,8 +79,10 @@
 		</select>
 	</div>
 	{/if}
+	-->
 
-<!-- 小分類 -->
+	<!-- 小分類 -->
+	<!--
 	{#if $midSelectedStore && $midSelectedStore.itemId >= 1}
 	<div class="chat-message-text original-box-shadow">
 		<div style="width: 100%; font-size: 1rem; line-height: 1rem;"><span>小分類選択（任意）：</span></div>
@@ -95,6 +100,7 @@
 		</select>
 	</div>
 	{/if}
+	-->
 
 		<!-- user Question -->
 		{#if $prevTalks}
