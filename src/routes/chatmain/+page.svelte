@@ -1,4 +1,5 @@
 <script>
+	import { onMount, afterUpdate } from 'svelte';
 	import { Clock } from 'svelte-loading-spinners'
 	import { enhance, applyAction } from '$app/forms'
 	import { invalidateAll } from '$app/navigation'
@@ -18,6 +19,24 @@
 //	export let isVisibleGptAnswerBox
 
 	import { loading, isVisibleGptAnswerBox, majaArray, midArray, minArray, majaSelectedStore, midSelectedStore, minSelectedStore, gptchatStrStore, message, prevTalks } from './store'
+
+	// Reference to the chat container
+	let chatContainer;
+
+	// Scroll to the bottom of the chat container
+	const scrollToBottom = () => {
+		if (chatContainer) {
+			chatContainer.scrollTo({
+				top: chatContainer.scrollHeight,
+				behavior: 'smooth', // Adds smooth scrolling
+			});
+		}
+	};
+
+	// Automatically scroll when the chat content updates
+	afterUpdate(() => {
+		scrollToBottom();
+	});	
 
 	/** @type {import('./$types').PageData} */
 	export let data
@@ -42,7 +61,7 @@
 
 <!-- <DarkSwitcher /> -->
 
-<section style="flex: 1; overflow-y: scroll;" class="my-2">
+<section style="flex: 1; overflow-y: scroll;" class="my-2" bind:this={chatContainer}>
 	<!-- 大分類 -->
 	<!--
 	<div class="chat-message-text original-box-shadow">
