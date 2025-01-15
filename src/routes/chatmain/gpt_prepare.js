@@ -25,7 +25,7 @@ const get_embedding = async (your_prompt) => {
 			},
 			body: JSON.stringify({
 				input: your_prompt,
-				model: 'text-embedding-ada-002'
+				model: 'text-embedding-3-large'
 			})
 		})
 
