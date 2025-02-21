@@ -21,7 +21,7 @@
 			// Renew store
 			if ('data' in result) {
 				if (result.data !== undefined) {
-					const resp = await fetch('/api/getgptcompletion', {
+						const resp = await fetch('/api/getgptcompletion', {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json'
@@ -29,10 +29,11 @@
 						body: JSON.stringify ({
 							prompt: result.data.prompt
 						})
-					})
-					const data = await resp.json()
-					console.log("data.gotanswer", data.gotanswer)
-					$gptchatStrStore = [...$gptchatStrStore, data.gotanswer]
+						})
+						const data = await resp.json()
+						console.log("data.gotanswer", data.gotanswer)
+
+						$gptchatStrStore = [...$gptchatStrStore, data.gotanswer]
 
 					$loading = false
 					// Store to prevTalks

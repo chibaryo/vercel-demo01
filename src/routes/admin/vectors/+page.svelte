@@ -56,6 +56,33 @@
 		})
 		deleteselModalOpen = false
 	}
+
+	const handleDownload = async () => {
+                const resp = await fetch(`/api/vectors`, {
+                        method: 'GET',
+                        headers: {
+                                'Content-Type': 'application/json'
+                        }
+                })
+
+                if (resp.ok) {
+                        const blob = await resp.blob()
+                        const url = window.URL.createObjectURL(blob)
+
+                        const a = document.createElement('a')
+                        a.href = url
+                        a.download = 'vectors.xlsx'
+                        document.body.appendChild(a)
+                        a.click()
+
+                        // Clean up
+                        document.body.removeChild(a)
+                        window.URL.revokeObjectURL(url)
+                } else {
+                        console.error('Failed to download file')
+                }
+    }	
+	
 	const closeDeleteModal = () => {
 		deleteselModalOpen = false
 	}
@@ -86,8 +113,9 @@
 	<button style="border: 1px solid;" on:click={() => handleAddPost()}>新規登録</button>
 	<button style="border: 1px solid;" on:click={() => handleInsertXlsx()}>Excel一括登録</button>
 	<button style="border: 1px solid;" on:click={() => handleMultiRowDelete()}>範囲指定削除</button>
+  <button style="border: 1px solid;" on:click={() => handleDownload()}>Excel一括ダウンロード</button>
 
-	<table>
+  <table>
 		<thead>
 			<tr>
 				<th>Id</th>
@@ -207,7 +235,7 @@
 </DeleteManyModal>
 
 <style>
-	form > input, div {
+	div {
 		margin: 12px;
 	}
 	table {

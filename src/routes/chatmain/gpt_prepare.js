@@ -67,7 +67,7 @@ export const get_vectorized_arr = async (yourStr) => {
 }
 
 export const gpt_createCompletion = async (prompt, max_tokens) => {
-	const url = 'https://api.openai.com/v1/completions'
+	const url = 'https://api.openai.com/v1/chat/completions'
 	const response = await fetch(url, {
 		method: "POST",
 		headers: {
@@ -75,22 +75,28 @@ export const gpt_createCompletion = async (prompt, max_tokens) => {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			model: 'gpt-3.5-turbo-instruct', // deprecated: text-davinci-003
-			prompt: prompt,
-			max_tokens: max_tokens
+			model: 'gpt-4o-mini', // deprecated: text-davinci-003
+			messages: [
+				{
+					role: "user",
+					content: prompt,
+				}
+			]
+//			prompt: prompt,
+//			max_tokens: max_tokens
 		})
 	})
 
 	const data = await response.json()
-	console.log('data["choices"][0]["text"]', data["choices"][0]['text'])
+	console.log('data["choices"][0]["message"]["content"]', data["choices"][0]["message"]["content"])
 
 	// Store to DB
 	await postChatHistoryController.createChatHistory({
 		q_text: prompt,
-		a_text: data["choices"][0]['text']
+		a_text: data["choices"][0]["message"]["content"]
 	});
 
-	return data["choices"][0]['text']
+	return data["choices"][0]["message"]["content"]
 }
 
 export const compareWithVect = async (yourVect) => {

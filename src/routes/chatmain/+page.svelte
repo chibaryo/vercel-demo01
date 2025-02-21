@@ -152,7 +152,7 @@
 				<span class="prof_name" style="white-space: nowrap; text-align: center; font-size: 0.75rem; line-height: 0.85rem;">ChatGPT</span>
 			</div>
 			<div class="message original-box-shadow" style="grid-column: 2/ span 8; grid-row: 1/2; margin-left: 6px; display: flex; flex-direction: column;">
-				<span class="chat-message-text" style="display: inline-block; font-size: 1rem; line-height: 1rem; padding: 0.5rem;">
+				<span class="chat-message-text" style="display: inline-block; font-size: 1rem; line-height: 1rem; padding: 0.5rem; white-space: pre-wrap;">
 					{prevEntry.gptchatStrStore}
 				</span>
 			</div>
@@ -226,11 +226,12 @@
 	box-shadow: 0px 10px 10px -6px rgba(0, 0, 0, 0.3);
 }
 
+/*
 select {
 	padding: 0.75rem;
 	font-family: 'Sawarabi Mincho', serif;
 	font-size: 1rem;
-}
+}*/
 </style>
 
 <svelte:head>

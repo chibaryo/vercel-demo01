@@ -6,6 +6,8 @@ export const POST = (async ({ request }) => {
 
   const response = await gpt_createCompletion(prompt, max_tokens)
 
+  console.log("## server response ##", response)
+
   return new Response(JSON.stringify(
     { 
 			message: 'OK',
